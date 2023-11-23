@@ -6,7 +6,9 @@ const AppBarDesktop = () => {
                 bgcolor: "#0B3964",
             }}>
                 <Typography sx={{
-                margin: "8px"
+                my: "8px",
+                mx: "16px",
+                fontSize: "30px"
             }}>
                 Reactor Simulator
                 </Typography>

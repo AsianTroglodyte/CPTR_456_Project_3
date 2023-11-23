@@ -2,16 +2,28 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import  BodyDesktop from './components/BodyDesktop'
 import AppBarDesktop from './components/AppBarDesktop'
-
+import MainDashboard from './components/MainDashboard'
+import IndividualReactor from './components/IndividualReactor'
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
+// Please note that we will eventually create our own custom theme
+// for the time being we will be using largely inline css to style our pages
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
       <AppBarDesktop />
-      <BodyDesktop />
+      <Router>
+        <Switch>
+          <Route path="/">
+            <MainDashboard />
+          </Route>
+          <Route>
+            <IndividualReactor path="/IndividualReactor" />
+          </Route>
+        </Switch>
+      </Router>
       {/* <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

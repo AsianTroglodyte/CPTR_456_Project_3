@@ -1,6 +1,13 @@
-:root {
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;600&display=swap');
+
+* {
   margin: 0px;
   padding: 0px;
+  font-family: 'Inter', sans-serif;
+}
+
+:root {
   height: 100%;
   width: 100%;
 
@@ -13,9 +20,6 @@
 }
 
 body {
-  margin: 0px;
-  padding: 0px;
-
   display: flex;
   flex-direction: column;
   place-items: top;
@@ -39,21 +43,3 @@ body {
 button:hover {
   border-color: #646cff;
 } */
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
