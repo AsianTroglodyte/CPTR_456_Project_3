@@ -1,12 +1,14 @@
 import { Stack, Divider, Container, Box} from "@mui/material";
 import AllReactorButtons from "./AllReactorButtons"
 import AllReactorInfo from "./AllReactorInfo"
-import ReactorListDesktop from "./ReactorListDesktop";
+import AllReactorListDesktop from "./AllReactorListDesktop";
 import AllReactorTempGraph from "./AllReactorTempGraph";
 
 const MainDashboard = () => {
     return (
         <>
+        {/*The purpose of the Container MUI layout we are using to basically create "canvas" for us
+        to work with*/}
             <Container>
                     <Stack 
                     direction="row" 
@@ -15,7 +17,7 @@ const MainDashboard = () => {
                     divider={<Divider orientation="vertical" flexItem />}
                     sx={{mt:"80px"}}
                     >
-                        <ReactorListDesktop />
+                        <AllReactorListDesktop />
                         
                         <Stack direction="column" alignItems="center" spacing={2}>
                             <AllReactorButtons />

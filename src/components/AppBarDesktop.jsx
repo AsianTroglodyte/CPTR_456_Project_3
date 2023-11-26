@@ -8,8 +8,10 @@ const AppBarDesktop = () => {
                 <Typography sx={{
                 my: "8px",
                 mx: "16px",
-                fontSize: "30px"
-            }}>
+
+            }}
+            variant = "h1"
+            >
                 Reactor Simulator
                 </Typography>
             </AppBar>

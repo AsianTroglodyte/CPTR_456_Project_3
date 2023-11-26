@@ -19,10 +19,10 @@ const AllReactorInfo = () =>{
                 }}
                 elevation={3}
                 >
-                    <Typography>
+                    <Typography display="block" variant="h3">
                         Total Energy Output
                     </Typography>
-                    <Typography>
+                    <Typography display="block" variant="aggregateInfo">
                         100 GW
                     </Typography>
                 </Paper>
@@ -32,11 +32,11 @@ const AllReactorInfo = () =>{
                 }}
                 elevation={3}
                 >
-                    <Typography>
+                    <Typography display="block" variant="h3">
                         Average Reactor Temperature
                     </Typography>
-                    <Typography>
-                        100C
+                    <Typography display="block" variant="aggregateInfo">
+                        100 C
                     </Typography>
                 </Paper>
             </Stack>
