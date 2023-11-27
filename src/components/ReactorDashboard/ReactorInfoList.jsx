@@ -1,9 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ReactorCardDesktop from "../MainDashboard/ReactorCardDesktop"
-import { Stack, Typography, Box, Card, CardActionArea, CardHeader, CardContent, Button, CardActions} from "@mui/material";
+import { Stack, Typography, Box, Card, CardActionArea, CardHeader, CardContent, Button, CardActions, InputBase, TextField} from "@mui/material";
 
 
 const ReactorInfoList = () => {
+
+    // Ignore the following voodoo 
+    const FONT_SIZE = 9
+    const DEFAULT_INPUT_WIDTH = 50
+
+    const [textValue, setTextValue] = useState("")
+    const [inputWidth, setInputWidth] = useState(DEFAULT_INPUT_WIDTH)
+    
+    useEffect(() => {
+        if (textValue.length * FONT_SIZE > DEFAULT_INPUT_WIDTH) {
+            setInputWidth((textValue.length + 1) * FONT_SIZE * 2)
+        } else {
+            setInputWidth(DEFAULT_INPUT_WIDTH)
+        }
+    }, [textValue])
+
+
     return (
         <>
         <Stack
@@ -13,7 +30,22 @@ const ReactorInfoList = () => {
         justifyContent="center"
         minWidth= "250px"
         >
-        <Typography sx={{color: "#0B3964", fontSize: "24px", fontWeight: "Medium"}} variant="Medium"> This Reactor</Typography>
+        {/*using Input Base instead of a text field component because the text field component
+        did not fit the style we were going for*/}
+        <InputBase 
+            input="text" 
+            required={true} 
+            variant="filled"
+            // value="This Reactor" 
+            sx={{fontSize: "24px", 
+                color: "#0B3964", 
+                maxWidth: "200px", 
+                overflow: "hidden", 
+                // width: `${inputWidth}px`
+            }} 
+            // onChange={(e) => {setTextValue(e.target.value); console.log("bruh")}}
+        />
+        {/* <Typography variant="h2"> This Reactor</Typography> */}
             <Stack 
             minWidth= "250px"
             alignItems= "center"
@@ -21,7 +53,7 @@ const ReactorInfoList = () => {
             spacing={1}
             pb={5}
             pt={1}
-            maxHeight={"70vh"}
+            maxHeight={"65vh"}
             overflow={"auto"}
             >
                 {/*Fuel Injector*/}
@@ -85,7 +117,7 @@ const ReactorInfoList = () => {
                     {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
                     <CardContent sx={{py:0}} >
                         <Typography display="block" variant="basicInfo">
-                            {"temperature"}
+                            {"5 rods in 5 rods out"}
                         </Typography>
                     </CardContent>
                 </Card>
@@ -141,7 +173,6 @@ const ReactorInfoList = () => {
                         <Typography display="block" variant="h3" mt="15px">
                             {"Coolant State"}
                         </Typography>
-                        
                         <Typography display="block"  variant="basicInfo">
                             {"temperature"}
                         </Typography>

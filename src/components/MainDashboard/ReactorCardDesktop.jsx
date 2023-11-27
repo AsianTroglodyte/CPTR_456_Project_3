@@ -1,21 +1,11 @@
 import { Paper, Typography, Card, CardActionArea, CardContent, CardHeader} from '@mui/material';
 import {createTheme, ThemeProvider} from "@mui/material";
 
-
-const theme = createTheme({
-    typography: {
-        h3: {
-            fontSize: 16,
-        }
-    }
-})
-
 const ReactorCardDesktop = (props) => {
     const {reactorName, temperature} = props
 
     let cardColor = ""
     let textColor = ""
-    let variantType = ""
 
     // this switch statement determines what color our card and its text is
     switch (temperature) {
@@ -47,14 +37,11 @@ const ReactorCardDesktop = (props) => {
             minHeight: "80px",
             backgroundColor: cardColor,
             color: textColor
-        }}
-            elevation={3}
-        >
+        }}>
             {/*Card Action Area basically allows for clicking the card and performing an action*/}
             <CardActionArea>
                 <CardHeader 
                     title={reactorName} 
-                    sx={{fontSize: "12px", fontWeight: "Medium"}} 
                     titleTypographyProps={{variant:'h3' }}/>
                 {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
                 <CardContent sx={{py:0, mb:2}} >

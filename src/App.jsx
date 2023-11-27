@@ -17,23 +17,24 @@ import ReactorDashboard from './components/ReactorDashboard/ReactorDashboard'
 // h1 as a variant what we're doing here is redefining our what h1 means along with other variants
 // Additionally, we are defining our own variants 
 
+
+// following theme must be moved to it's own theme file eventually and imported here
 const theme = createTheme({
   typography: {
       h1: {
         // for the title of the page: "React Simulator"
         fontSize: 30,
+        fontWeight: "500"
       },
       h2: {
-        // for the sub-titles like "All Reactors"
+        // for the headers like "All Reactors"
         fontSize: 24,
+        fontWeight: "500"
       },
       h3: {
-        // for titles like the ones we find in our cards
+        // for headers like the ones we find in our cards
         fontSize: 16,
-      },
-      // makes button Text not completely uppercase
-      button: {
-        textTransform: 'none'
+        fontWeight: "200"
       },
       basicInfo: {
         // for text giving basic info (non-aggregate info)
@@ -43,8 +44,13 @@ const theme = createTheme({
       aggregateInfo: {
         // for text giving aggregate info (avg temperature, total energy output)
         fontSize: "32px", 
-        fontWeight: "100"
-      }
+        fontWeight: "100",
+      },
+      // changes default button theme
+      button: {
+        textTransform: 'none',
+        fontSize: "12px"
+      },
   },
   palette: {
     primary: {
@@ -62,18 +68,42 @@ const theme = createTheme({
       main: "#FF6663"
     },
     regularButton: {
+      // applies the neon green and gives a darker version for button hover
+      // the button component automatically accesses the dark for the hover effect
       main: "#E0FF4F",
       dark: "#c1ea00",
     },
     emergencyButton: {
+      // applies the red and gives a darker version for button hover
+      // the button component automatically accesses the dark for the hover effect
       main: "#FF6663",
       dark: "#ff5f5c",
     },
-  }
+    // undefined as of now these are the colors of the temperature levels
+    safe: {
+      main: ""
+    },
+    warning: {
+      main: ""
+    },
+    danger: {
+      main: ""
+    },
+    meltdown: {
+      main: ""
+    }
+  },
+  // This goes over theme style overrides: https://mui.com/material-ui/customization/theme-components/#theme-default-props
+  
 })
+
 
 function App() {
   const [reactorInfo, setReactorInfo] = useState([])
+  const [reactor1Name, setReactor1Name] = useState("Reactor 1")
+  const [reactor2Name, setReactor2Name] = useState("Reactor 2")
+  const [reactor3Name, setReactor3Name] = useState("Reactor 3")
+  const [reactor4Name, setReactor4Name] = useState("Reactor 4")
 
   return (
     <>
