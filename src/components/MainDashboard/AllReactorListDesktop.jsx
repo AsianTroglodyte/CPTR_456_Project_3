@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ReactorCardDesktop from "./ReactorCardDesktop"
-import { Stack, Typography, createTheme, ThemeProvider, Box, InputBase} from "@mui/material";
+import { Stack, Typography, createTheme, ThemeProvider, Box} from "@mui/material";
 
 
 const ReactorListDesktop = () => {
@@ -13,18 +13,7 @@ const ReactorListDesktop = () => {
         justifyContent="center"
         minWidth= "250px"
         >
-            <InputBase             
-                input="text" 
-                required={true} 
-                variant="filled"
-                // value="This Reactor" 
-                sx={{fontSize: "24px", 
-                    color: "#0B3964", 
-                    maxWidth: "200px", 
-                    overflow: "hidden", 
-                    // width: `${inputWidth}px`
-                }}  
-            />
+            <Typography variant="h2" color="primary"> All Reactors</Typography>
             
             <Stack 
             minWidth= "250px"
@@ -36,7 +25,7 @@ const ReactorListDesktop = () => {
             maxHeight={"65vh"}
             overflow={"auto"}
             >
-                {/*1. amount of card temporary. exists to ensure that scrolling works */}
+                {/*1. amount of card temporary. exists to ensure that scrolling works*/}
                 <ReactorCardDesktop reactorName = {"Reactor 1"} temperature = {"Safe"}/>
                 <ReactorCardDesktop reactorName = {"Reactor 2"} temperature = {"Warning"}/>
                 <ReactorCardDesktop reactorName = {"Reactor 3"} temperature = {"Danger"}/>

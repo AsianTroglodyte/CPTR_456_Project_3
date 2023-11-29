@@ -19,7 +19,7 @@ const ReactorCardDesktop = (props) => {
             break
         case "Danger":
             cardColor = "#FF6663"
-            textColor = "#0B3964"
+            textColor = "#FFFFFF"
             break
         case "Meltdown":
             cardColor = "#000000"

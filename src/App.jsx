@@ -77,21 +77,21 @@ const theme = createTheme({
       // applies the red and gives a darker version for button hover
       // the button component automatically accesses the dark for the hover effect
       main: "#FF6663",
-      dark: "#ff5f5c",
+      // dark: "",
     },
     // undefined as of now these are the colors of the temperature levels
-    safe: {
-      main: ""
-    },
-    warning: {
-      main: ""
-    },
-    danger: {
-      main: ""
-    },
-    meltdown: {
-      main: ""
-    }
+    // safe: {
+    //   main: ""
+    // },
+    // warning: {
+    //   main: ""
+    // },
+    // danger: {
+    //   main: ""
+    // },
+    // meltdown: {
+    //   main: ""
+    // }
   },
   // This goes over theme style overrides: https://mui.com/material-ui/customization/theme-components/#theme-default-props
   
@@ -114,7 +114,7 @@ function App() {
           <Route exact path="/">
             <MainDashboard />
           </Route>
-          <Route  path="/ReactorDashboard">
+          <Route  path={`/`}>
             <ReactorDashboard />
           </Route>
         </Switch>
