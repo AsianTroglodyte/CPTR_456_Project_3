@@ -2,10 +2,15 @@ import { useState, useEffect } from "react";
 import ReactorCardDesktop from "../MainDashboard/ReactorCardDesktop"
 import { Stack, Typography, Box, Card, CardActionArea, CardHeader, CardContent, Button, CardActions, InputBase, TextField} from "@mui/material";
 
+import FuelInjectorCard from "./ReactorDashBoardCards.jsx/FuelInjectorCard";
+import PowerOutputCard from "./ReactorDashBoardCards.jsx/PowerOutputCard";
+import RodStateCard from "./ReactorDashBoardCards.jsx/RodStateCard";
+import ShutdownCard from "./ReactorDashBoardCards.jsx/ShutdownCard";
+import TempCoolantCard from "./ReactorDashBoardCards.jsx/TempCoolantCard";
 
 const ReactorInfoList = () => {
 
-    // Ignore the following voodoo 
+    // Ignore the following javascript voodoo 
     const FONT_SIZE = 9
     const DEFAULT_INPUT_WIDTH = 50
 
@@ -43,7 +48,6 @@ const ReactorInfoList = () => {
                 overflow: "hidden", 
                 // width: `${inputWidth}px`
             }} 
-            // onChange={(e) => {setTextValue(e.target.value); console.log("bruh")}}
         />
         {/* <Typography variant="h2"> This Reactor</Typography> */}
             <Stack 
@@ -56,128 +60,15 @@ const ReactorInfoList = () => {
             maxHeight={"65vh"}
             overflow={"auto"}
             >
-                {/*Fuel Injector*/}
-                <Card sx={{
-                    width: "200px",
-                    minHeight: "100px",
-                    backgroundColor: "#FFFFFFF",
-                    color: "#0B3964"
-                }}
-                elevation={3}
-                >
-                    <CardHeader 
-                        title={"Fuel Injector"} 
-                        sx={{fontWeight: "Medium", mx: "8"}} 
-                        titleTypographyProps={{variant:'h3' }}/>
-                    {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
-                    <CardActions sx={{mx:"16px", p:"0px"}}>
-                        <Button variant="contained"  size="small" color="regularButton" sx={{
-                            color: "#0B3964",
-                            fontSize: "12px"
-                        }}>
-                            Refuel
-                        </Button>
-                    </ CardActions>
-                </Card>
+                <FuelInjectorCard />
 
-                {/*Power output Card*/}
-                <Card sx={{
-                    width: "200px",
-                    minHeight: "80px",
-                    backgroundColor: "#FFFFFFF",
-                    color: "#0B3964"
-                }}
-                elevation={3}
-                >
-                    <CardHeader 
-                        title={"Power Output"} 
-                        sx={{fontWeight: "Medium", mx: "8"}} 
-                        titleTypographyProps={{variant:'h3' }}/>
-                    {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
-                    <CardContent sx={{py:0, mb:2}} >
-                        <Typography display="block" variant="basicInfo">
-                            {"100 megawatts"}
-                        </Typography>
-                    </CardContent>
-                </Card>
+                <PowerOutputCard />
 
-                {/*Rod State Card*/}
-                <Card sx={{
-                    width: "200px",
-                    minHeight: "80px",
-                    backgroundColor: "#FFFFFFF",
-                    color: "#0B3964"
-                }}
-                elevation={3}
-                >
-                    <CardHeader 
-                        title={"Rod State"} 
-                        sx={{fontWeight: "Medium", mx: "8"}} 
-                        titleTypographyProps={{variant:'h3' }}/>
-                    {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
-                    <CardContent sx={{py:0}} >
-                        <Typography display="block" variant="basicInfo">
-                            {"5 rods in 5 rods out"}
-                        </Typography>
-                    </CardContent>
-                </Card>
+                <RodStateCard />
 
-                {/*Shutdown Card*/}
-                <Card sx={{
-                    width: "200px",
-                    minHeight: "100px",
-                    backgroundColor: "#FFFFFFF",
-                    color: "#0B3964"
-                }}
-                elevation={3}
-                >
-                    <CardHeader 
-                        title={"Shutdown"} 
-                        sx={{fontWeight: "Medium", mx: "8"}} 
-                        titleTypographyProps={{variant:'h3' }}
-                        />
-                    {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
-                    <CardActions sx={{mx:"16px", p:"0px"}}>
-                        <Button variant="contained"  size="small" color="regularButton"  sx={{
-                            color: "#0B3964",
-                            fontSize: "12px"
-                        }}>
-                            Controlled
-                        </Button>
-                        <Button variant="contained"  size="small" color="emergencyButton"  sx={{
-                            color: "#0B3964",
-                            fontSize: "12px"
-                        }}>
-                            Emergency
-                        </Button>
-                    </CardActions>
-                </Card>
+                <ShutdownCard />
 
-                {/*temperature and coolant state Card*/}
-                <Card sx={{
-                    width: "200px",
-                    minHeight: "120px",
-                    backgroundColor: "#FFFFFFF",
-                    color: "#0B3964"
-                }}
-                elevation={3}
-                >
-                    {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
-                    <CardContent sx={{py:0, mt:2}} >
-                        <Typography display="block" variant="h3">
-                            {"Temperature State"}
-                        </Typography>
-                        <Typography display="block" variant="basicInfo">
-                            {"100C Safe"}
-                        </Typography>
-                        <Typography display="block" variant="h3" mt="15px">
-                            {"Coolant State"}
-                        </Typography>
-                        <Typography display="block"  variant="basicInfo">
-                            {"temperature"}
-                        </Typography>
-                    </CardContent>
-                </Card>
+                <TempCoolantCard />
                 
             </Stack>
         </Stack>
