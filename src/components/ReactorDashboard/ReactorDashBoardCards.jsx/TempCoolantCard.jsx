@@ -1,11 +1,11 @@
-import {Card, Typography, CardContent} from "@mui/material"
+import {Card, Typography, CardContent, CardActions, Switch, FormControlLabel} from "@mui/material"
 
 const TempCoolantCard = () => {
     return (
         <Card sx={{
             width: "200px",
             minHeight: "120px",
-            backgroundColor: "#FFFFFFF",
+            backgroundColor: "#FFFFFF",
             color: "#0B3964"
         }}
         elevation={3}
@@ -15,15 +15,18 @@ const TempCoolantCard = () => {
                 <Typography display="block" variant="h3">
                     {"Temperature State"}
                 </Typography>
-                <Typography display="block" variant="basicInfo">
+                <Typography display="block" variant="basicInfo" mt="15px">
                     {"100C Safe"}
                 </Typography>
                 <Typography display="block" variant="h3" mt="15px">
                     {"Coolant State"}
                 </Typography>
-                <Typography display="block"  variant="basicInfo">
-                    {"temperature"}
-                </Typography>
+                <CardActions sx={{p:"0"}}>
+                    <FormControlLabel 
+                        control={<Switch color="secondary"/>} 
+                        label={<Typography variant="basicInfo"> On</Typography>}>
+                    </FormControlLabel>
+                </CardActions>
             </CardContent>
         </Card>
     )

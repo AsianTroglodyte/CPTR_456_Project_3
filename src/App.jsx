@@ -46,7 +46,7 @@ const theme = createTheme({
         fontSize: "32px", 
         fontWeight: "100",
       },
-      // changes default button theme
+      // changes default button styling: no longer all caps, font size is 12px
       button: {
         textTransform: 'none',
         fontSize: "12px"
@@ -57,44 +57,45 @@ const theme = createTheme({
       // the dark blue
       main: "#0B3964",
       // the light blue
-      light: "BFD7EA"
+      light: "#BFD7EA",
+
     },
     secondary: {
       // the neon green
-      main: "#E0FF4F"
+      main: "#E0FF4F",
+      contrastText: '#0B3964'
     },
     emergency: {
       // the red 
       main: "#FF6663"
     },
     regularButton: {
-      // applies the neon green and gives a darker version for button hover
-      // the button component automatically accesses the dark for the hover effect
+      // main = neon green, dark = darker neon green for hover effect, contrastTest = dark blue for text color
       main: "#E0FF4F",
-      dark: "#c1ea00",
+      dark: "#d4ff0c",
+      contrastText: '#0B3964'
     },
     emergencyButton: {
-      // applies the red and gives a darker version for button hover
-      // the button component automatically accesses the dark for the hover effect
+      // main = pinkish red, dark = darker pinkish red, contrastTest = white for text color
       main: "#FF6663",
-      // dark: "",
+      dark: "#ff514e",
+      contrastText: '#FFFFFF'
     },
     // undefined as of now these are the colors of the temperature levels
-    // safe: {
-    //   main: ""
-    // },
-    // warning: {
-    //   main: ""
-    // },
-    // danger: {
-    //   main: ""
-    // },
-    // meltdown: {
-    //   main: ""
-    // }
+    safe: {
+      main: "#BFD7EA"
+    },
+    warning: {
+      main: "#FF6663"
+    },
+    danger: {
+      main: "#FF6663"
+    },
+    meltdown: {
+      main: "#000000"
+    }
   },
   // This goes over theme style overrides: https://mui.com/material-ui/customization/theme-components/#theme-default-props
-  
 })
 
 

@@ -17,18 +17,8 @@ const ShutdownCard = () => {
                 />
             {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
             <CardActions sx={{mx:"16px", p:"0px"}}>
-                <Button variant="contained"  size="small" color="regularButton"  sx={{
-                    color: "#0B3964",
-                    fontSize: "12px"
-                }}>
-                    Controlled
-                </Button>
-                <Button variant="contained"  size="small" color="emergencyButton"  sx={{
-                    color: "#0B3964",
-                    fontSize: "12px"
-                }}>
-                    Emergency
-                </Button>
+                <Button variant="contained"  size="small" color="regularButton"> Controlled </Button>
+                <Button variant="contained"  size="small" color="emergencyButton"> Emergency </Button>
             </CardActions>
         </Card>
     )

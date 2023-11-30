@@ -16,12 +16,7 @@ const FuelInjectorCard = () => {
                 titleTypographyProps={{variant:'h3' }}/>
             {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
             <CardActions sx={{mx:"16px", p:"0px"}}>
-                <Button variant="contained"  size="small" color="regularButton" sx={{
-                    color: "#0B3964",
-                    fontSize: "12px"
-                }}>
-                    Refuel
-                </Button>
+                <Button variant="contained"  size="small" color="regularButton"> Refuel </Button>
             </ CardActions>
         </Card>
     )
