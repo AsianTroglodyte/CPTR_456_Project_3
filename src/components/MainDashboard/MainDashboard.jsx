@@ -4,7 +4,9 @@ import AllReactorInfo from "./AllReactorInfo"
 import AllReactorListDesktop from "./AllReactorListDesktop";
 import AllReactorTempGraph from "./AllReactorTempGraph";
 
-const MainDashboard = () => {
+const MainDashboard = (props) => {
+    const { plantName } = props
+    console.log("PLANT NAME:", plantName)
     return (
         <>
         {/*The purpose of the Container MUI layout we are using to basically create "canvas" for us
@@ -17,6 +19,7 @@ const MainDashboard = () => {
                     divider={<Divider orientation="vertical" flexItem />}
                     sx={{mt:"80px"}}
                     >
+                        <p>{ plantName }</p>
                         <AllReactorListDesktop />
                         
                         <Stack direction="column" alignItems="center" spacing={2}>

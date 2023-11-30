@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import AppBarDesktop from './components/AppBarDesktop'
 import MainDashboard from './components/MainDashboard/MainDashboard'
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
-import {createTheme, ThemeProvider} from "@mui/material";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import { createTheme, ThemeProvider } from "@mui/material";
 import ReactorDashboard from './components/ReactorDashboard/ReactorDashboard'
 // Please note that we will eventually create our own custom theme
 // for the time being we will be using largely inline css to style our pages
@@ -21,36 +21,36 @@ import ReactorDashboard from './components/ReactorDashboard/ReactorDashboard'
 // following theme must be moved to it's own theme file eventually and imported here
 const theme = createTheme({
   typography: {
-      h1: {
-        // for the title of the page: "React Simulator"
-        fontSize: 30,
-        fontWeight: "500"
-      },
-      h2: {
-        // for the headers like "All Reactors"
-        fontSize: 24,
-        fontWeight: "500"
-      },
-      h3: {
-        // for headers like the ones we find in our cards
-        fontSize: 16,
-        fontWeight: "200"
-      },
-      basicInfo: {
-        // for text giving basic info (non-aggregate info)
-        fontSize: "16px", 
-        fontWeight: "200"
-      },
-      aggregateInfo: {
-        // for text giving aggregate info (avg temperature, total energy output)
-        fontSize: "32px", 
-        fontWeight: "100",
-      },
-      // changes default button styling: no longer all caps, font size is 12px
-      button: {
-        textTransform: 'none',
-        fontSize: "12px"
-      },
+    h1: {
+      // for the title of the page: "React Simulator"
+      fontSize: 30,
+      fontWeight: "500"
+    },
+    h2: {
+      // for the headers like "All Reactors"
+      fontSize: 24,
+      fontWeight: "500"
+    },
+    h3: {
+      // for headers like the ones we find in our cards
+      fontSize: 16,
+      fontWeight: "200"
+    },
+    basicInfo: {
+      // for text giving basic info (non-aggregate info)
+      fontSize: "16px",
+      fontWeight: "200"
+    },
+    aggregateInfo: {
+      // for text giving aggregate info (avg temperature, total energy output)
+      fontSize: "32px",
+      fontWeight: "100",
+    },
+    // changes default button styling: no longer all caps, font size is 12px
+    button: {
+      textTransform: 'none',
+      fontSize: "12px"
+    },
   },
   palette: {
     primary: {
@@ -101,26 +101,45 @@ const theme = createTheme({
 
 function App() {
   const [reactorInfo, setReactorInfo] = useState([])
-  const [reactor1Name, setReactor1Name] = useState("Reactor 1")
-  const [reactor2Name, setReactor2Name] = useState("Reactor 2")
-  const [reactor3Name, setReactor3Name] = useState("Reactor 3")
-  const [reactor4Name, setReactor4Name] = useState("Reactor 4")
+  const [plantName, setPlantName] = useState("")
+  const [avgTemps, setAvgTemps] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const rawData = await fetch("https://nuclear.dacoder.io/reactors?apiKey=b9d10dcab8f4dd45")
+      const data = await rawData.json()
+      console.log(data.reactors)
+      setReactorInfo(data.reactors)
+      setPlantName(data.plant_name)
+    }
+    fetchData()
+  }, [])
 
   return (
     <>
-    <ThemeProvider theme={theme}>
-      <AppBarDesktop />
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <MainDashboard />
-          </Route>
-          <Route  path={`/`}>
-            <ReactorDashboard />
-          </Route>
-        </Switch>
-      </Router>
-    </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <AppBarDesktop />
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <MainDashboard plantName={plantName} />
+              {
+                reactorInfo.map(reactor => {
+                  return (
+                    <div>
+                      <p>{ reactor.id }</p>
+                      <p>{ reactor.name }</p>
+                    </div>
+                  )
+                })
+              }
+            </Route>
+            <Route path={'/:id'}>
+              <ReactorDashboard />
+            </Route>
+          </Switch>
+        </Router>
+      </ThemeProvider>
 
     </>
   )
