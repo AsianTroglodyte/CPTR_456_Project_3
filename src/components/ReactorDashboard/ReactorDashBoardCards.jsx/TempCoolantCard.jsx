@@ -4,7 +4,7 @@ const TempCoolantCard = () => {
     return (
         <Card sx={{
             width: "200px",
-            minHeight: "120px",
+            minHeight: "150px",
             backgroundColor: "#FFFFFF",
             color: "#0B3964"
         }}
