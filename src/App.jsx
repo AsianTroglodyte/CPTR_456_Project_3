@@ -3,8 +3,10 @@ import './App.css'
 import AppBarDesktop from './components/AppBarDesktop'
 import MainDashboard from './components/MainDashboard/MainDashboard'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import { createTheme, ThemeProvider } from "@mui/material";
+import { Card, createTheme, ThemeProvider } from "@mui/material";
 import ReactorDashboard from './components/ReactorDashboard/ReactorDashboard'
+import AllReactorButtons from './components/MainDashboard/AllReactorButtons'
+
 // Please note that we will eventually create our own custom theme
 // for the time being we will be using largely inline css to style our pages
 
@@ -100,20 +102,79 @@ const theme = createTheme({
 
 
 function App() {
-  const [reactorInfo, setReactorInfo] = useState([])
+  const [reactors, setReactors] = useState([])
   const [plantName, setPlantName] = useState("")
   const [avgTemps, setAvgTemps] = useState([])
-
+  const [totalOutput, setTotalOutput] = useState(0)
+ 
+//useParam
   useEffect(() => {
     const fetchData = async () => {
       const rawData = await fetch("https://nuclear.dacoder.io/reactors?apiKey=b9d10dcab8f4dd45")
-      const data = await rawData.json()
-      console.log(data.reactors)
-      setReactorInfo(data.reactors)
-      setPlantName(data.plant_name)
+      const jsonData = await rawData.json()
+
+      setPlantName(jsonData.plant_name)
+      
+      const jsonReactors = await Promise.all(jsonData.reactors.map(async (reactor) => {
+        const rawTempData = await fetch(`https://nuclear.dacoder.io/reactors/temperature/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
+        const tempData = await rawTempData.json()
+
+        const rawCoolantData = await fetch(`https://nuclear.dacoder.io/reactors/coolant/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
+        const coolantData = await rawCoolantData.json()
+
+        const rawOutputData = await fetch(`https://nuclear.dacoder.io/reactors/output/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
+        const outputData = await rawOutputData.json()
+
+        const rawFuelLevel = await fetch(`https://nuclear.dacoder.io/reactors/fuel-level/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
+        const fuelLevelData = await rawFuelLevel.json()
+
+        const rawReactorState = await fetch(`https://nuclear.dacoder.io/reactors/reactor-state/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
+        const reactorStateData = await rawReactorState.json()
+
+        const rawRodState = await fetch(`https://nuclear.dacoder.io/reactors/rod-state/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
+        const rodStateData = await rawRodState.json()
+
+        
+
+        return {
+          ...reactor,
+          temperature: tempData.temperature,
+          coolant: coolantData.coolant,
+          output: outputData.output,
+          fuelLevel: fuelLevelData.fuel,
+          reactorState: reactorStateData.state,
+          rodState: rodStateData.control_rods
+        }
+      }))
+      const totalOutputValue = jsonReactors.reduce((accumulator, reactor) => {
+        const reactorOutput = reactor.output.amount || 0
+        return accumulator + reactorOutput
+      }, 0)
+      setTotalOutput(totalOutputValue)
+      
+
+      const totalTemperature = jsonReactors.reduce((accumulator, reactor) => {
+        const reactorTemperature = reactor.temperature.amount || 0
+        return accumulator + reactorTemperature
+      }, 0)
+      const averageTemperature = jsonReactors.length > 0 ? totalTemperature / jsonReactors.length : 0
+      setAvgTemps(averageTemperature)
+  
+
+      setReactors(jsonReactors)
+
+      console.log("Reactors:", jsonReactors);
+      console.log("Total Output:", totalOutputValue);
+      console.log("Total Temperature:", totalTemperature);
+      
     }
-    fetchData()
+
+    const interval = setInterval(fetchData, 300)
+
+    return () => clearInterval(interval)
+
   }, [])
+
 
   return (
     <>
@@ -122,17 +183,9 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/">
-              <MainDashboard plantName={plantName} />
-              {
-                reactorInfo.map(reactor => {
-                  return (
-                    <div>
-                      <p>{ reactor.id }</p>
-                      <p>{ reactor.name }</p>
-                    </div>
-                  )
-                })
-              }
+              <MainDashboard/>
+              
+
             </Route>
             <Route path={'/:id'}>
               <ReactorDashboard />

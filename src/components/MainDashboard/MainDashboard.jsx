@@ -6,7 +6,7 @@ import AllReactorTempGraph from "./AllReactorTempGraph";
 
 const MainDashboard = (props) => {
     const { plantName } = props
-    console.log("PLANT NAME:", plantName)
+    
     return (
         <>
         {/*The purpose of the Container MUI layout we are using to basically create "canvas" for us
