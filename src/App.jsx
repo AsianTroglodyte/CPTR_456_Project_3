@@ -162,10 +162,6 @@ function App() {
   
 
       setReactors(jsonReactors)
-
-      console.log("Reactors:", jsonReactors);
-      console.log("Total Output:", totalOutputValue);
-      console.log("Total Temperature:", totalTemperature);
       
     }
 
@@ -179,11 +175,11 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <AppBarDesktop />
+        <AppBarDesktop setReactors={setReactors} />
         <Router>
           <Switch>
             <Route exact path="/">
-              <MainDashboard/>
+              <MainDashboard />
               
 
             </Route>
