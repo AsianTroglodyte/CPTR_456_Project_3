@@ -10,22 +10,6 @@ import TempCoolantCard from "./ReactorDashBoardCards.jsx/TempCoolantCard";
 
 const ReactorInfoList = () => {
 
-    // Ignore the following javascript voodoo 
-    const FONT_SIZE = 9
-    const DEFAULT_INPUT_WIDTH = 50
-
-    const [textValue, setTextValue] = useState("")
-    const [inputWidth, setInputWidth] = useState(DEFAULT_INPUT_WIDTH)
-    
-    useEffect(() => {
-        if (textValue.length * FONT_SIZE > DEFAULT_INPUT_WIDTH) {
-            setInputWidth((textValue.length + 1) * FONT_SIZE * 2)
-        } else {
-            setInputWidth(DEFAULT_INPUT_WIDTH)
-        }
-    }, [textValue])
-
-
     return (
         <>
         <Stack

@@ -2,12 +2,6 @@ import { Stack, Divider, Container, Box} from "@mui/material";
 import ReactorInfoList from "./ReactorInfoList"
 import ReactorTempGraph from "./ReactorTempGraph";
 
-import FuelInjectorCard from "./ReactorDashBoardCards.jsx/FuelInjectorCard";
-import PowerOutputCard from "./ReactorDashBoardCards.jsx/PowerOutputCard";
-import RodStateCard from "./ReactorDashBoardCards.jsx/RodStateCard";
-import ShutdownCard from "./ReactorDashBoardCards.jsx/ShutdownCard";
-import TempCoolantCard from "./ReactorDashBoardCards.jsx/TempCoolantCard";
-
 const ReactorDashboard = () => {
     return (
         <>

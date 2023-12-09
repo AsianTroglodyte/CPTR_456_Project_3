@@ -106,7 +106,16 @@ function App() {
   const [plantName, setPlantName] = useState("")
   const [avgTemps, setAvgTemps] = useState([])
   const [totalOutput, setTotalOutput] = useState(0)
- 
+  // Info for individual reactor dashboard
+
+  const [refuelData,setRefuelData] = useState({})
+  const [powerOutput, setPowerOutput] = useState({})
+  const [rodsRaised, setRodsRaised] = useState({})
+  const [temp, setTemp] = useState({})
+  const [coolantState, setCoolantState] = useState({})
+  const [reactorState, setReactorState] = useState({})
+
+
 //useParam
   useEffect(() => {
     const fetchData = async () => {
@@ -134,7 +143,10 @@ function App() {
         const rawRodState = await fetch(`https://nuclear.dacoder.io/reactors/rod-state/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
         const rodStateData = await rawRodState.json()
 
+        // const rawRefuelState = await fetch(`https://nuclear.dacoder.io/reactors/refuel/${reactor.id}?apiKey=892598c5362642d2`)
+        // const refuelState = await rawRefuelState.json()
         
+        // Fuel injector, power ouptput, 
 
         return {
           ...reactor,
@@ -143,7 +155,7 @@ function App() {
           output: outputData.output,
           fuelLevel: fuelLevelData.fuel,
           reactorState: reactorStateData.state,
-          rodState: rodStateData.control_rods
+          rodState: rodStateData.control_rods,
         }
       }))
       const totalOutputValue = jsonReactors.reduce((accumulator, reactor) => {
@@ -163,13 +175,12 @@ function App() {
 
       setReactors(jsonReactors)
 
-      console.log("Reactors:", jsonReactors);
-      console.log("Total Output:", totalOutputValue);
-      console.log("Total Temperature:", totalTemperature);
-      
+      console.log("Reactors:", jsonReactors)
+      console.log("Total Output:", totalOutputValue)
+      console.log("Total Temperature:", totalTemperature)
     }
 
-    const interval = setInterval(fetchData, 300)
+    const interval = setInterval(fetchData, 500)
 
     return () => clearInterval(interval)
 

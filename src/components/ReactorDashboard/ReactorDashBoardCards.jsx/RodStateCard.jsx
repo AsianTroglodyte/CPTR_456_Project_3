@@ -36,6 +36,7 @@ const RodStateCard = () => {
                             }}
                             variant="filled"
                             onChange={(event, val)=> {setRodsRaised(val)}}
+                            inputProps={{min:0, max:250, maxstep:1}}
                             // The margin left styling is a bit strange indeed
                             // the positioning of the label is very off for some reason
                             sx={{width: "80px", height: "20px", ml: "28px"}}/>}
