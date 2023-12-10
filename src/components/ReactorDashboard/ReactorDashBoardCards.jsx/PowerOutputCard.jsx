@@ -1,6 +1,8 @@
 import {Card, CardHeader, CardContent, Typography} from "@mui/material"
 
-const PowerOutputCard = () => {
+const PowerOutputCard = (props) => {
+    const {curReactorData} = props
+
     return (
         <Card sx={{
             width: "200px",
@@ -17,7 +19,7 @@ const PowerOutputCard = () => {
             {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
             <CardContent sx={{py:0, mb:2}} >
                 <Typography display="block" variant="basicInfo">
-                    {"100 megawatts"}
+                    {typeof curReactorData === 'undefined' ? "loading" : curReactorData.output.amount + " Megawatts"} 
                 </Typography>
             </CardContent>
         </Card>

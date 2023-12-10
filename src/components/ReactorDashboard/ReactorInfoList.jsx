@@ -8,7 +8,33 @@ import RodStateCard from "./ReactorDashBoardCards.jsx/RodStateCard";
 import ShutdownCard from "./ReactorDashBoardCards.jsx/ShutdownCard";
 import TempCoolantCard from "./ReactorDashBoardCards.jsx/TempCoolantCard";
 
-const ReactorInfoList = () => {
+const ReactorInfoList = (props) => {
+    const {curReactorData, setReactors,} = props
+    const [reactorName, setReactorName] = useState("Reactor 1")
+    console.log("curReactorData: ", curReactorData)
+
+    const changeReactorName = (event, val) => {
+        setReactorName(event.target.value)
+
+        serverChangeCoolant(event.target.value)
+    }
+
+    const serverChangeCoolant = async (newReactorName) => {
+        await fetch(`https://nuclear.dacoder.io/reactors/set-reactor-name/{id}${curReactorData.id}?apiKey=892598c5362642d2`, {
+            method: "PUT",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+            ,
+            body: JSON.stringify(
+                {
+                    "name": newReactorName
+                }
+            )
+        })
+        console.log("Reactor Name: ", newReactorName)
+    }
 
     return (
         <>
@@ -25,6 +51,8 @@ const ReactorInfoList = () => {
             input="text" 
             required={true} 
             variant="filled"
+            value={reactorName}
+            onChange={(event, val) => changeReactorName(event)}
             // value="This Reactor" 
             sx={{fontSize: "24px", 
                 color: "#0B3964", 
@@ -32,7 +60,8 @@ const ReactorInfoList = () => {
                 overflow: "hidden", 
                 // width: `${inputWidth}px`
             }} 
-        />
+        >
+        </InputBase>
         {/* <Typography variant="h2"> This Reactor</Typography> */}
             <Stack 
             minWidth= "250px"
@@ -44,15 +73,15 @@ const ReactorInfoList = () => {
             maxHeight={"65vh"}
             overflow={"auto"}
             >
-                <FuelInjectorCard />
+                <FuelInjectorCard curReactorData={curReactorData} setReactors={setReactors}/>
 
-                <PowerOutputCard />
+                <PowerOutputCard curReactorData={curReactorData}/>
 
-                <RodStateCard />
+                <RodStateCard curReactorData={curReactorData} setReactors={setReactors}/>
 
-                <ShutdownCard />
+                <ShutdownCard curReactorData={curReactorData} setReactors={setReactors}/>
 
-                <TempCoolantCard />
+                <TempCoolantCard curReactorData={curReactorData} setReactors={setReactors}/>
                 
             </Stack>
         </Stack>

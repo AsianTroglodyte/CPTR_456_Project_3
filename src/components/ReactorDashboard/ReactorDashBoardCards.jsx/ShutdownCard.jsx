@@ -1,6 +1,7 @@
 import {Card, CardHeader, CardActions, Button} from "@mui/material"
 
-const ShutdownCard = () => {
+const ShutdownCard = (props) => {
+    const {setReactors} = props
     return (
         <Card sx={{
             width: "200px",

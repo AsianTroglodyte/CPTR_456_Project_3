@@ -108,13 +108,6 @@ function App() {
   const [totalOutput, setTotalOutput] = useState(0)
   // Info for individual reactor dashboard
 
-  const [refuelData,setRefuelData] = useState({})
-  const [powerOutput, setPowerOutput] = useState({})
-  const [rodsRaised, setRodsRaised] = useState({})
-  const [temp, setTemp] = useState({})
-  const [coolantState, setCoolantState] = useState({})
-  const [reactorState, setReactorState] = useState({})
-
 
 //useParam
   useEffect(() => {
@@ -124,7 +117,7 @@ function App() {
 
       setPlantName(jsonData.plant_name)
       
-      const jsonReactors = await Promise.all(jsonData.reactors.map(async (reactor) => {
+      const jsonReactorsData = await Promise.all(jsonData.reactors.map(async (reactor) => {
         const rawTempData = await fetch(`https://nuclear.dacoder.io/reactors/temperature/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
         const tempData = await rawTempData.json()
 
@@ -158,52 +151,47 @@ function App() {
           rodState: rodStateData.control_rods,
         }
       }))
-      const totalOutputValue = jsonReactors.reduce((accumulator, reactor) => {
+      const totalOutputValue = jsonReactorsData.reduce((accumulator, reactor) => {
         const reactorOutput = reactor.output.amount || 0
         return accumulator + reactorOutput
       }, 0)
       setTotalOutput(totalOutputValue)
       
 
-      const totalTemperature = jsonReactors.reduce((accumulator, reactor) => {
+      const totalTemperature = jsonReactorsData.reduce((accumulator, reactor) => {
         const reactorTemperature = reactor.temperature.amount || 0
         return accumulator + reactorTemperature
       }, 0)
-      const averageTemperature = jsonReactors.length > 0 ? totalTemperature / jsonReactors.length : 0
+
+      const averageTemperature = jsonReactorsData.length > 0 ? totalTemperature / jsonReactorsData.length : 0
       setAvgTemps(averageTemperature)
-  
+      setReactors(jsonReactorsData)                          
 
-      setReactors(jsonReactors)
-<<<<<<< HEAD
-
-      console.log("Reactors:", jsonReactors)
-      console.log("Total Output:", totalOutputValue)
+      console.log("Reactors:", jsonReactorsData)
+      console.log("ReactorState: ", jsonReactorsData[0].reactorState)
+      console.log("Total Output: ", totalOutputValue)
       console.log("Total Temperature:", totalTemperature)
-=======
-      
->>>>>>> origin/main
     }
 
-    const interval = setInterval(fetchData, 500)
+    const interval = setInterval(fetchData, 5000)
 
     return () => clearInterval(interval)
 
   }, [])
 
-
   return (
     <>
       <ThemeProvider theme={theme}>
-        <AppBarDesktop setReactors={setReactors} />
+        <AppBarDesktop />
         <Router>
           <Switch>
             <Route exact path="/">
-              <MainDashboard />
+              <MainDashboard/>
               
 
             </Route>
-            <Route path={'/:id'}>
-              <ReactorDashboard />
+            <Route path={'/ReactorDashboard/:id'}>
+              <ReactorDashboard reactors={reactors} setReactors={setReactors}/>
             </Route>
           </Switch>
         </Router>
