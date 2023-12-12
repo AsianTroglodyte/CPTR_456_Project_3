@@ -9,27 +9,19 @@ const FuelInjectorCard = (props) => {
     const handleRefuel = async () => {
         console.log('handleMaintenance', id)
         await fetch(`https://nuclear.dacoder.io/reactors/refuel/${id}?apiKey=b9d10dcab8f4dd45`, {
-            method: 'POST',
-            headers: {
-                'accept': '*/*'
-            },
-            body: ''
+            method: 'POST'
         })
     }
 
     const handleMaintenance = async () => {
         console.log('handleMaintenance', id)
         await fetch(`https://nuclear.dacoder.io/reactors/maintenance/${id}?apiKey=b9d10dcab8f4dd45`, {
-            method: 'POST',
-            headers: {
-                'accept': '*/*'
-            },
-            body: ''
+            method: 'POST'
         })
         setRodsLowered(300)
     }
 
-    let fuelPercentage = reactors.length != 0? reactors.find((reactor) => reactor.id === id).fuelLevel.percentage.toFixed(2) : "loading";
+    let fuelPercentage = reactors.length != 0? reactors.find((reactor) => reactor.id === id).fuelLevel.percentage.toFixed(2) + "%": "loading";
     
     return (
         <Card sx={{
@@ -46,7 +38,7 @@ const FuelInjectorCard = (props) => {
                 titleTypographyProps={{variant:'h3' }}/>
             {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
             <Typography display="block" variant="basicInfo" sx={{mx:"16px", p:"0px", mb: "16px"}}>
-                {fuelPercentage}% full
+                {fuelPercentage}
             </Typography>
             <CardActions sx={{mx:"16px", p:"0px"}}>
                 <Button onClick={handleRefuel} variant="contained"  size="small" color="regularButton"> Refuel </Button>

@@ -23,8 +23,8 @@ const TempCoolantCard = (props) => {
     // and storing the current reactor's values onto the variables would be preferable. 
     // don't feel like doing it rn
     let tempAmount = reactors.length != 0? reactors.find((reactor) => reactor.id === id).temperature.amount.toFixed(2) : "loading";
-    let tempUnit = reactors.length != 0? reactors.find((reactor) => reactor.id === id).temperature.unit : "loading";
-    let tempStatus = reactors.length != 0? reactors.find((reactor) => reactor.id === id).temperature.status : "loading";
+    let tempUnit = reactors.length != 0? reactors.find((reactor) => reactor.id === id).temperature.unit : "";
+    let tempStatus = reactors.length != 0? reactors.find((reactor) => reactor.id === id).temperature.status : "";
     let coolantState = reactors.length != 0? reactors.find((reactor) => reactor.id === id).coolant : "loading";
     let coolantSwitchState = reactors.length != 0? reactors.find((reactor) => reactor.id === id).coolant == "on"? true: false: false;
 

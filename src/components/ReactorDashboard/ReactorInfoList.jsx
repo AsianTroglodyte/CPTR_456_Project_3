@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import ReactorCardDesktop from "../MainDashboard/ReactorCardDesktop"
-import { Stack, Typography, Box, Card, CardActionArea, CardHeader, CardContent, Button, CardActions, InputBase, TextField} from "@mui/material";
+import { Stack, InputBase} from "@mui/material";
 
 import FuelInjectorCard from "./ReactorDashBoardCards.jsx/FuelInjectorCard";
 import PowerOutputCard from "./ReactorDashBoardCards.jsx/PowerOutputCard";
@@ -13,7 +12,7 @@ import StartupCard from "./ReactorDashBoardCards.jsx/StartupCard";
 const ReactorInfoList = (props) => {
     const {reactors, setReactors} = props
     const [reactorName, setReactorName] = useState("loading...")
-    // the FuelInjectorCard changes the amount of Rods lowered in the RodStateCard Thus the state must be declared here
+    // the FuelInjectorCard changes the amount of Rods lowered in the RodStateCard. Thus the state must be declared here
     const [rodsLowered, setRodsLowered] = useState(0)
 
     const {id} = useParams()
@@ -21,21 +20,30 @@ const ReactorInfoList = (props) => {
     // immediately getting the amount of Rods
     useEffect( () => {
         const fetchData = async () => {
-            const rawData = await fetch(`https://nuclear.dacoder.io/reactors/rod-state/${id}?apiKey=b9d10dcab8f4dd45`)
-            const jsonData = await rawData.json()
-            setRodsLowered(jsonData.control_rods.in)
-            console.log("rods", JSON.stringify(jsonData.control_rods.in))
+            const rawRodsData = await fetch(`https://nuclear.dacoder.io/reactors/rod-state/${id}?apiKey=b9d10dcab8f4dd45`)
+            const rodsJsonData = await rawRodsData.json()
+
+            const rawReactorsData = await fetch(`https://nuclear.dacoder.io/reactors/?apiKey=b9d10dcab8f4dd45`)
+            const reactorsJsonData = await rawReactorsData.json()
+
+            const initialReactorName = reactorsJsonData.reactors.find((reactor) => reactor.id == id).name
+            setReactorName(initialReactorName)
+            console.log(reactorName)
+
+            setRodsLowered(rodsJsonData.control_rods.in)
+            // console.log("rods", JSON.stringify(jsonData.control_rods.in))
         }
         fetchData()
     },[])
 
     const changeReactorName = (event, val) => {
         setReactorName(event.target.value)
-        serverChangeName()
+        serverChangeName(event.target.value)
     }
 
-    const serverChangeName = async () => {
-        await fetch(`https://nuclear.dacoder.io/reactors/set-reactor-name/${id}?apiKey=892598c5362642d2`, {
+    const serverChangeName = async (newName) => {
+        console.log("Reactor Name: ", newName)
+        fetch(`https://nuclear.dacoder.io/reactors/set-reactor-name/${id}?apiKey=892598c5362642d2`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
@@ -44,11 +52,11 @@ const ReactorInfoList = (props) => {
             ,
             body: JSON.stringify(
                 {
-                    name: reactorName
+                    "name": newName
                 }
             )
         })
-        console.log("Reactor Name: ", reactorName)
+        // console.log("Reactor Name: ", newName)
     }
 
     // getting the name of the 
@@ -81,7 +89,7 @@ const ReactorInfoList = (props) => {
             required={true} 
             variant="filled"
             value={reactorName}
-            onChange={(event, val) => changeReactorName(event)}
+            onChange={(event) => changeReactorName(event)}
             // value="This Reactor" 
             sx={{fontSize: "24px", 
                 color: "#0B3964", 
@@ -111,7 +119,7 @@ const ReactorInfoList = (props) => {
 
                 <PowerOutputCard reactors={reactors}/>
 
-                <RodStateCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered} setReactors={setReactors} reactors={reactors}/>
+                <RodStateCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered}/>
 
                 <TempCoolantCard setReactors={setReactors} reactors={reactors}/>
                 

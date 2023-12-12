@@ -2,7 +2,6 @@ import {Card, CardHeader, CardActions, Button} from "@mui/material"
 import { useParams } from "react-router-dom"
 
 const ShutdownCard = (props) => {
-    const {setReactors, reactors} = props
 
     const {id} = useParams()
 

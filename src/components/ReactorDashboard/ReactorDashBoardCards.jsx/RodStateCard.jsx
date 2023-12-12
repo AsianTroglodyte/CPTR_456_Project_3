@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
 const RodStateCard = (props) => {
-    const {reactors, setReactors, rodsLowered, setRodsLowered} = props
+    const {rodsLowered, setRodsLowered} = props
     const {id} = useParams()
     
 
