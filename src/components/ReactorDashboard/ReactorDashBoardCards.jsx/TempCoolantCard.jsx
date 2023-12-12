@@ -9,35 +9,14 @@ const TempCoolantCard = (props) => {
     const [switchState, setSwitchState] = useState(false)
 
     const changeCoolant = (event, val) => {
-        setCoolantState(event.target.checked)
-
-        let coolantObj = {}
-        if (event.target.checked) {
-            coolantObj = {"coolant": "on"}
-        }
-        else {
-            coolantObj = {"coolant": "off"}
-        }
-        console.log("checked? ", true, coolantObj)
-        console.log("checked? ", event.target.checked, coolantObj)
-        serverChangeCoolant(event.target.checked, coolantObj)
+        setSwitchState(event.target.checked)
+        serverChangeCoolant
     }
 
-    const serverChangeCoolant = async (checked, coolantObj) => {
-
+    const serverChangeCoolant = async () => {
         await fetch(`https://nuclear.dacoder.io/reactors/coolant/${id}?apiKey=892598c5362642d2`, {
             method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            }
-            ,
-            body: JSON.stringify(
-                coolantObj
-            )
         })
-
-        getReactorCoolantInfo()
     }
 
     // I know that the following code is travesty but my brain is so fried rn extracting

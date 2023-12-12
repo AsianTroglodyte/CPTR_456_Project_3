@@ -2,24 +2,31 @@ import {Card, Button, CardHeader, CardActions, Typography} from "@mui/material"
 import { useParams } from "react-router-dom"
 
 const FuelInjectorCard = (props) => {
-    const { reactors, setReactors} = props
+    const { reactors, setReactors, rodsLowered, setRodsLowered} = props
     const {id} = useParams()
 
 
     const handleRefuel = async () => {
-        await fetch(`https://nuclear.dacoder.io/reactors/refuel/${id}?apiKey=892598c5362642d2`, {
-            // curl -d '{"name":"Jamie","age":"23","image":""}' -H 'Content-Type: application/json' -X PUT  https://example.com/api/2/update/31
-            method: "POST"
+        console.log('handleMaintenance', id)
+        await fetch(`https://nuclear.dacoder.io/reactors/refuel/${id}?apiKey=b9d10dcab8f4dd45`, {
+            method: 'POST',
+            headers: {
+                'accept': '*/*'
+            },
+            body: ''
         })
-        const jsonData = await rawData.json()
-        setReactors(reactors)
     }
 
-    const handleMaintenanceMode = async () => {
-        await fetch(`https://nuclear.dacoder.io/reactors/refuel/${id}?apiKey=892598c5362642d2`, {
-            // curl -d '{"name":"Jamie","age":"23","image":""}' -H 'Content-Type: application/json' -X PUT  https://example.com/api/2/update/31
-            method: "POST"
+    const handleMaintenance = async () => {
+        console.log('handleMaintenance', id)
+        await fetch(`https://nuclear.dacoder.io/reactors/maintenance/${id}?apiKey=b9d10dcab8f4dd45`, {
+            method: 'POST',
+            headers: {
+                'accept': '*/*'
+            },
+            body: ''
         })
+        setRodsLowered(300)
     }
 
     let fuelPercentage = reactors.length != 0? reactors.find((reactor) => reactor.id === id).fuelLevel.percentage.toFixed(2) : "loading";
@@ -42,8 +49,8 @@ const FuelInjectorCard = (props) => {
                 {fuelPercentage}% full
             </Typography>
             <CardActions sx={{mx:"16px", p:"0px"}}>
-                <Button variant="contained"  size="small" color="regularButton"> Refuel </Button>
-                <Button variant="contained"  size="small" color="regularButton"> Maintenance </Button>
+                <Button onClick={handleRefuel} variant="contained"  size="small" color="regularButton"> Refuel </Button>
+                <Button onClick={handleMaintenance} variant="contained"  size="small" color="regularButton"> Maintenance </Button>
             </ CardActions>
         </Card>
     )

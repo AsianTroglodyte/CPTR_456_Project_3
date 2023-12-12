@@ -9,8 +9,7 @@ const PowerOutputCard = (props) => {
     // setPowerOutput(typeof reactors == "undefined" ? "loading" : reactors.find((reactor) => reactor.id === id))
     let powerOutput = reactors.length != 0? reactors.find((reactor) => reactor.id === id).output.amount : "loading"
     let powerUnits =  reactors.length != 0? " " + reactors.find((reactor) => reactor.id === id).output.unit : "loading"
-    console.log("power output: ", powerOutput)
-    //  reactors.find(({id}) => id == pageId).output.amount
+    // console.log("power output: ", powerOutput)
 
     return (
         <Card sx={{

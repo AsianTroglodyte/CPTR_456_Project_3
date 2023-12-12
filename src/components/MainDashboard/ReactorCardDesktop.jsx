@@ -39,13 +39,13 @@ const ReactorCardDesktop = (props) => {
             color: textColor
         }}>
             {/*Card Action Area basically allows for clicking the card and performing an action*/}
-            <CardActionArea component={RouterLink} to={`/ReactorDashboard/${reactorID}`} sx={{mb:2}}>
+            <CardActionArea component={RouterLink} to={`/ReactorDashboard/${reactorID}`} sx={{mb:3}}>
                 <CardHeader 
                     title={reactorName} 
                     titleTypographyProps={{variant:'h3' }}/>
                 {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
                 <CardContent sx={{py:0, mb:2}} >
-                    <Typography display="block" variant="basicInfo" sx={{mb:2}}>
+                    <Typography display="block" variant="basicInfo" sx={{pb: 2}}>
                         {reactorTempStatus}
                     </Typography>
                 </CardContent>

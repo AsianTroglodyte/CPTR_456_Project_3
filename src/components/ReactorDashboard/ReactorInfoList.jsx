@@ -8,36 +8,62 @@ import RodStateCard from "./ReactorDashBoardCards.jsx/RodStateCard";
 import ShutdownCard from "./ReactorDashBoardCards.jsx/ShutdownCard";
 import TempCoolantCard from "./ReactorDashBoardCards.jsx/TempCoolantCard";
 import { useParams } from "react-router-dom";
+import StartupCard from "./ReactorDashBoardCards.jsx/StartupCard";
 
 const ReactorInfoList = (props) => {
     const {reactors, setReactors} = props
+    const [reactorName, setReactorName] = useState("loading...")
+    // the FuelInjectorCard changes the amount of Rods lowered in the RodStateCard Thus the state must be declared here
+    const [rodsLowered, setRodsLowered] = useState(0)
 
-    const [reactorName, setReactorName] = useState("Reactor 1")
-    // console.log("curReactorData: ", curReactorData)
+    const {id} = useParams()
 
+    // immediately getting the amount of Rods
+    useEffect( () => {
+        const fetchData = async () => {
+            const rawData = await fetch(`https://nuclear.dacoder.io/reactors/rod-state/${id}?apiKey=b9d10dcab8f4dd45`)
+            const jsonData = await rawData.json()
+            setRodsLowered(jsonData.control_rods.in)
+            console.log("rods", JSON.stringify(jsonData.control_rods.in))
+        }
+        fetchData()
+    },[])
 
     const changeReactorName = (event, val) => {
         setReactorName(event.target.value)
-
-        serverChangeCoolant(event.target.value)
+        serverChangeName()
     }
 
-    const serverChangeCoolant = async (newReactorName) => {
-        await fetch(`https://nuclear.dacoder.io/reactors/set-reactor-name/{id}${curReactorData.id}?apiKey=892598c5362642d2`, {
+    const serverChangeName = async () => {
+        await fetch(`https://nuclear.dacoder.io/reactors/set-reactor-name/${id}?apiKey=892598c5362642d2`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json; charset=UTF-8"
             }
             ,
             body: JSON.stringify(
                 {
-                    "name": newReactorName
+                    name: reactorName
                 }
             )
         })
-        console.log("Reactor Name: ", newReactorName)
+        console.log("Reactor Name: ", reactorName)
     }
+
+    // getting the name of the 
+    useEffect( () => {
+        const fetchData = async () => {
+            const rawData = await fetch(`https://nuclear.dacoder.io/reactors/?apiKey=892598c5362642d2`)
+            const jsonData = await rawData.json()
+            console.log("rods", JSON.stringify(jsonData))
+        }
+    },[])
+
+
+
+    // let updatedReactorName = (reactors.length != 0? " " + reactors.find((reactor) => reactor.id === id).name : "loading")
+    // setReactorName(updatedReactorName)
 
     return (
         <>
@@ -76,13 +102,16 @@ const ReactorInfoList = (props) => {
             maxHeight={"65vh"}
             overflow={"auto"}
             >
-                <FuelInjectorCard setReactors={setReactors} reactors={reactors}/>
+
+                <StartupCard />
+
+                <ShutdownCard setReactors={setReactors} reactors={reactors}/>
+
+                <FuelInjectorCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered} setReactors={setReactors} reactors={reactors}/>
 
                 <PowerOutputCard reactors={reactors}/>
 
-                <RodStateCard setReactors={setReactors} reactors={reactors}/>
-
-                <ShutdownCard setReactors={setReactors} reactors={reactors}/>
+                <RodStateCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered} setReactors={setReactors} reactors={reactors}/>
 
                 <TempCoolantCard setReactors={setReactors} reactors={reactors}/>
                 

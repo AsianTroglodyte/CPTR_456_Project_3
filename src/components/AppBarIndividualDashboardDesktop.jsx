@@ -1,7 +1,6 @@
 import { AppBar, Typography, Box, Button} from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 const AppBarIndividualDashboardDesktop = ({ setReactors}) => {
-    // const location = useLocation()
     const handleReset = async () => {
         console.log('Reset')
             await fetch(`https://nuclear.dacoder.io/reactors/reset/?apiKey=b9d10dcab8f4dd45`, {
