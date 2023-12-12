@@ -16,7 +16,6 @@ const MainDashboard = (props) => {
     //useParam
     useEffect(() => {
         const fetchData = async () => {
-            console.log(reactors)
             const rawData = await fetch("https://nuclear.dacoder.io/reactors?apiKey=b9d10dcab8f4dd45")
             const jsonData = await rawData.json()
 
@@ -39,6 +38,7 @@ const MainDashboard = (props) => {
                 const rawRodState = await fetch(`https://nuclear.dacoder.io/reactors/rod-state/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
                 const rodStateData = await rawRodState.json()
 
+                
 
 
                 return {
