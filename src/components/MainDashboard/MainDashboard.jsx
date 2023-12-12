@@ -3,6 +3,7 @@ import AllReactorButtons from "./AllReactorButtons"
 import AllReactorInfo from "./AllReactorInfo"
 import AllReactorListDesktop from "./AllReactorListDesktop";
 import AllReactorTempGraph from "./AllReactorTempGraph";
+import AppBarDesktop from "../AppBarDesktop";
 import { useState, useEffect } from "react";
 
 const MainDashboard = (props) => {
@@ -77,6 +78,7 @@ const MainDashboard = (props) => {
         <>
             {/*The purpose of the Container MUI layout we are using to basically create "canvas" for us
         to work with*/}
+            <AppBarDesktop />
             <Container>
                 <Stack
                     direction="row"
@@ -86,7 +88,7 @@ const MainDashboard = (props) => {
                     sx={{ mt: "80px" }}
                 >
                     <p>{plantName}</p>
-                    <AllReactorListDesktop />
+                    <AllReactorListDesktop reactors={reactors}/>
 
                     <Stack direction="column" alignItems="center" spacing={2}>
                         <AllReactorButtons reactors={reactors} />

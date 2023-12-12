@@ -7,11 +7,14 @@ import PowerOutputCard from "./ReactorDashBoardCards.jsx/PowerOutputCard";
 import RodStateCard from "./ReactorDashBoardCards.jsx/RodStateCard";
 import ShutdownCard from "./ReactorDashBoardCards.jsx/ShutdownCard";
 import TempCoolantCard from "./ReactorDashBoardCards.jsx/TempCoolantCard";
+import { useParams } from "react-router-dom";
 
 const ReactorInfoList = (props) => {
-    const {curReactorData, setReactors,} = props
+    const {reactors, setReactors} = props
+
     const [reactorName, setReactorName] = useState("Reactor 1")
-    console.log("curReactorData: ", curReactorData)
+    // console.log("curReactorData: ", curReactorData)
+
 
     const changeReactorName = (event, val) => {
         setReactorName(event.target.value)
@@ -73,15 +76,15 @@ const ReactorInfoList = (props) => {
             maxHeight={"65vh"}
             overflow={"auto"}
             >
-                <FuelInjectorCard curReactorData={curReactorData} setReactors={setReactors}/>
+                <FuelInjectorCard setReactors={setReactors} reactors={reactors}/>
 
-                <PowerOutputCard curReactorData={curReactorData}/>
+                <PowerOutputCard reactors={reactors}/>
 
-                <RodStateCard curReactorData={curReactorData} setReactors={setReactors}/>
+                <RodStateCard setReactors={setReactors} reactors={reactors}/>
 
-                <ShutdownCard curReactorData={curReactorData} setReactors={setReactors}/>
+                <ShutdownCard setReactors={setReactors} reactors={reactors}/>
 
-                <TempCoolantCard curReactorData={curReactorData} setReactors={setReactors}/>
+                <TempCoolantCard setReactors={setReactors} reactors={reactors}/>
                 
             </Stack>
         </Stack>

@@ -1,10 +1,10 @@
 import {Card, CardHeader, CardActions, Button} from "@mui/material"
 
 const ShutdownCard = (props) => {
-    const {setReactors} = props
+    const {setReactors, reactors} = props
     return (
         <Card sx={{
-            width: "200px",
+            width: "230px",
             minHeight: "100px",
             backgroundColor: "#FFFFFFF",
             color: "#0B3964"

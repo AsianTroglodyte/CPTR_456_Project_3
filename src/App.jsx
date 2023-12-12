@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import AppBarDesktop from './components/AppBarDesktop'
 import MainDashboard from './components/MainDashboard/MainDashboard'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import { Card, createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import ReactorDashboard from './components/ReactorDashboard/ReactorDashboard'
-import AllReactorButtons from './components/MainDashboard/AllReactorButtons'
 
 // Please note that we will eventually create our own custom theme
 // for the time being we will be using largely inline css to style our pages
@@ -182,13 +180,10 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <AppBarDesktop />
         <Router>
           <Switch>
             <Route exact path="/">
               <MainDashboard/>
-              
-
             </Route>
             <Route path={'/ReactorDashboard/:id'}>
               <ReactorDashboard reactors={reactors} setReactors={setReactors}/>

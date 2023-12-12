@@ -1,19 +1,19 @@
 import { Paper, Typography, Card, CardActionArea, CardContent, CardHeader} from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 import {createTheme, ThemeProvider} from "@mui/material";
 
 const ReactorCardDesktop = (props) => {
-    const {reactorName, temperature} = props
-
+    const {reactorName, reactorTempStatus, reactorID} = props
     let cardColor = ""
     let textColor = ""
 
     // this switch statement determines what color our card and its text is
-    switch (temperature) {
+    switch (reactorTempStatus) {
         case "Safe":
             cardColor = "#BFD7EA"
             textColor = "#0B3964"
             break
-        case "Warning":
+        case "Caution":
             cardColor = "#ffff7b"
             textColor = "#0B3964"
             break
@@ -39,14 +39,14 @@ const ReactorCardDesktop = (props) => {
             color: textColor
         }}>
             {/*Card Action Area basically allows for clicking the card and performing an action*/}
-            <CardActionArea>
+            <CardActionArea component={RouterLink} to={`/ReactorDashboard/${reactorID}`} sx={{mb:2}}>
                 <CardHeader 
                     title={reactorName} 
                     titleTypographyProps={{variant:'h3' }}/>
                 {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
                 <CardContent sx={{py:0, mb:2}} >
-                    <Typography display="block" variant="basicInfo">
-                        {temperature}
+                    <Typography display="block" variant="basicInfo" sx={{mb:2}}>
+                        {reactorTempStatus}
                     </Typography>
                 </CardContent>
             </CardActionArea>
