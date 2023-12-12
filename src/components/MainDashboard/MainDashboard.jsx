@@ -38,7 +38,7 @@ const MainDashboard = (props) => {
                 const rawRodState = await fetch(`https://nuclear.dacoder.io/reactors/rod-state/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
                 const rodStateData = await rawRodState.json()
 
-                console.log(reactors)
+                
 
 
                 return {
