@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import AppBarDesktop from './components/AppBarDesktop'
 import MainDashboard from './components/MainDashboard/MainDashboard'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
-import { Card, createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import ReactorDashboard from './components/ReactorDashboard/ReactorDashboard'
-import AllReactorButtons from './components/MainDashboard/AllReactorButtons'
 
 // Please note that we will eventually create our own custom theme
 // for the time being we will be using largely inline css to style our pages
@@ -106,7 +104,9 @@ function App() {
   const [plantName, setPlantName] = useState("")
   const [avgTemps, setAvgTemps] = useState([])
   const [totalOutput, setTotalOutput] = useState(0)
- 
+  // Info for individual reactor dashboard
+
+
 //useParam
   useEffect(() => {
     const fetchData = async () => {
@@ -115,7 +115,7 @@ function App() {
 
       setPlantName(jsonData.plant_name)
       
-      const jsonReactors = await Promise.all(jsonData.reactors.map(async (reactor) => {
+      const jsonReactorsData = await Promise.all(jsonData.reactors.map(async (reactor) => {
         const rawTempData = await fetch(`https://nuclear.dacoder.io/reactors/temperature/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
         const tempData = await rawTempData.json()
 
@@ -134,7 +134,10 @@ function App() {
         const rawRodState = await fetch(`https://nuclear.dacoder.io/reactors/rod-state/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
         const rodStateData = await rawRodState.json()
 
+        // const rawRefuelState = await fetch(`https://nuclear.dacoder.io/reactors/refuel/${reactor.id}?apiKey=892598c5362642d2`)
+        // const refuelState = await rawRefuelState.json()
         
+        // Fuel injector, power ouptput, 
 
         return {
           ...reactor,
@@ -143,48 +146,47 @@ function App() {
           output: outputData.output,
           fuelLevel: fuelLevelData.fuel,
           reactorState: reactorStateData.state,
-          rodState: rodStateData.control_rods
+          rodState: rodStateData.control_rods,
         }
       }))
-      const totalOutputValue = jsonReactors.reduce((accumulator, reactor) => {
+      const totalOutputValue = jsonReactorsData.reduce((accumulator, reactor) => {
         const reactorOutput = reactor.output.amount || 0
         return accumulator + reactorOutput
       }, 0)
       setTotalOutput(totalOutputValue)
       
 
-      const totalTemperature = jsonReactors.reduce((accumulator, reactor) => {
+      const totalTemperature = jsonReactorsData.reduce((accumulator, reactor) => {
         const reactorTemperature = reactor.temperature.amount || 0
         return accumulator + reactorTemperature
       }, 0)
-      const averageTemperature = jsonReactors.length > 0 ? totalTemperature / jsonReactors.length : 0
-      setAvgTemps(averageTemperature)
-  
 
-      setReactors(jsonReactors)
-      
+      const averageTemperature = jsonReactorsData.length > 0 ? totalTemperature / jsonReactorsData.length : 0
+      setAvgTemps(averageTemperature)
+      setReactors(jsonReactorsData)                          
+
+      console.log("Reactors:", jsonReactorsData)
+      console.log("ReactorState: ", jsonReactorsData[0].reactorState)
+      console.log("Total Output: ", totalOutputValue)
+      console.log("Total Temperature:", totalTemperature)
     }
 
-    const interval = setInterval(fetchData, 300)
+    const interval = setInterval(fetchData, 5000)
 
     return () => clearInterval(interval)
 
   }, [])
 
-
   return (
     <>
       <ThemeProvider theme={theme}>
-        <AppBarDesktop setReactors={setReactors} />
         <Router>
           <Switch>
             <Route exact path="/">
-              <MainDashboard />
-              
-
+              <MainDashboard/>
             </Route>
-            <Route path={'/:id'}>
-              <ReactorDashboard />
+            <Route path={'/ReactorDashboard/:id'}>
+              <ReactorDashboard reactors={reactors} setReactors={setReactors}/>
             </Route>
           </Switch>
         </Router>

@@ -1,9 +1,28 @@
 import {Card, CardHeader, CardActions, Button} from "@mui/material"
+import { useParams } from "react-router-dom"
 
-const ShutdownCard = () => {
+const ShutdownCard = (props) => {
+    const {setReactors, reactors} = props
+
+    const {id} = useParams()
+
+    const handleControlShutdown = async () => {
+        console.log('handleControlShutdown', id)
+        await fetch(`https://nuclear.dacoder.io/reactors/controlled-shutdown/${id}?apiKey=b9d10dcab8f4dd45`, {
+            method: 'POST',
+        })
+    }
+
+    const handleEmergencyShutdown = async () => {
+        console.log('handleEmergencyShutdown', id)
+        await fetch(`https://nuclear.dacoder.io/reactors/emergency-shutdown/${id}?apiKey=b9d10dcab8f4dd45`, {
+            method: 'POST',
+        })
+    }
+
     return (
         <Card sx={{
-            width: "200px",
+            width: "230px",
             minHeight: "100px",
             backgroundColor: "#FFFFFFF",
             color: "#0B3964"
@@ -17,8 +36,8 @@ const ShutdownCard = () => {
                 />
             {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
             <CardActions sx={{mx:"16px", p:"0px"}}>
-                <Button variant="contained"  size="small" color="regularButton"> Controlled </Button>
-                <Button variant="contained"  size="small" color="emergencyButton"> Emergency </Button>
+                <Button onClick={handleControlShutdown} variant="contained"  size="small" color="regularButton"> Controlled </Button>
+                <Button onClick={handleEmergencyShutdown} variant="contained"  size="small" color="emergencyButton"> Emergency </Button>
             </CardActions>
         </Card>
     )

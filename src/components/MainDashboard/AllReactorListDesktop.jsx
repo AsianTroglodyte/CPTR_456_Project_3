@@ -3,7 +3,8 @@ import ReactorCardDesktop from "./ReactorCardDesktop"
 import { Stack, Typography, createTheme, ThemeProvider, Box} from "@mui/material";
 
 
-const ReactorListDesktop = () => {
+const ReactorListDesktop = (props) => {
+    const {reactors} = props
     return (
         <>
         <Stack
@@ -25,16 +26,20 @@ const ReactorListDesktop = () => {
             maxHeight={"65vh"}
             overflow={"auto"}
             >
-                {/*1. amount of card temporary. exists to ensure that scrolling works*/}
-                <ReactorCardDesktop reactorName = {"Reactor 1"} temperature = {"Safe"}/>
+                {/*1. amount of card temporary. exists to ensure that scrolling works*/
+                reactors.map((reactor) => {
+                    return <ReactorCardDesktop 
+                                reactorName = {reactor.name} 
+                                reactorTempStatus = {reactor.temperature.status} 
+                                reactorID = {reactor.id} 
+                                key = {reactor.id} 
+                            />
+                })
+                }
+                {/* <ReactorCardDesktop reactorName = {"Reactor 1"} temperature = {"Safe"}/>
                 <ReactorCardDesktop reactorName = {"Reactor 2"} temperature = {"Warning"}/>
                 <ReactorCardDesktop reactorName = {"Reactor 3"} temperature = {"Danger"}/>
-                <ReactorCardDesktop reactorName = {"Reactor 4"} temperature = {"Meltdown"}/>
-                <ReactorCardDesktop reactorName = {"Reactor 5"} temperature = {"Safe"}/>
-                <ReactorCardDesktop reactorName = {"Reactor 6"} temperature = {"Danger"}/>
-                <ReactorCardDesktop reactorName = {"Reactor 7"} temperature = {"Safe"}/>
-                <ReactorCardDesktop reactorName = {"Reactor 8"} temperature = {"Warning"}/>
-                <ReactorCardDesktop reactorName = {"Reactor 9"} temperature = {"Meltdown"}/>
+                <ReactorCardDesktop reactorName = {"Reactor 4"} temperature = {"Meltdown"}/> */}
             </Stack>
         </Stack>
 
