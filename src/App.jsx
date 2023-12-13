@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import './App.css'
 import MainDashboard from './components/MainDashboard/MainDashboard'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import { createTheme, ThemeProvider } from "@mui/material";
 import ReactorDashboard from './components/ReactorDashboard/ReactorDashboard'
+import Chart from 'chart.js/auto'
 
 // Please note that we will eventually create our own custom theme
 // for the time being we will be using largely inline css to style our pages
@@ -104,8 +105,24 @@ function App() {
   const [plantName, setPlantName] = useState("")
   const [avgTemps, setAvgTemps] = useState([])
   const [totalOutput, setTotalOutput] = useState(0)
+  const canvasRef = useRef(null)
   // Info for individual reactor dashboard
 
+  const config = {
+    type: 'line',
+    data: {
+      labels: [], 
+      datasets: [
+        {
+          label: 'Average Temperatures',
+          data: avgTemps,
+          fill: false,
+          borderColor: 'rgba(75,192,192,1)',
+          borderWidth: 2,
+        }
+      ]
+    }
+  }
 
 //useParam
   useEffect(() => {
@@ -176,6 +193,21 @@ function App() {
     return () => clearInterval(interval)
 
   }, [])
+  useEffect(() => {
+    const ctx = canvasRef.current.getContext('2d');
+    const myChart = new Chart(ctx, config);
+    myChart.data.datasets[0].data = avgTemps;
+    myChart.update();
+
+  
+    return () => {
+      myChart.destroy()
+    }
+  }, [avgTemps]);
+
+
+ 
+ 
 
   return (
     <>
@@ -191,6 +223,8 @@ function App() {
           </Switch>
         </Router>
       </ThemeProvider>
+      <canvas ref={canvasRef} id="myChart"></canvas>
+
 
     </>
   )
