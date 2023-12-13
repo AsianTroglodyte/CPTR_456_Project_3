@@ -108,30 +108,14 @@ function App() {
   const canvasRef = useRef(null)
   // Info for individual reactor dashboard
 
-  const config = {
-    type: 'line',
-    data: {
-      labels: [], 
-      datasets: [
-        {
-          label: 'Average Temperatures',
-          data: avgTemps,
-          fill: false,
-          borderColor: 'rgba(75,192,192,1)',
-          borderWidth: 2,
-        }
-      ]
-    }
-  }
-
-//useParam
+  //useParam
   useEffect(() => {
     const fetchData = async () => {
       const rawData = await fetch("https://nuclear.dacoder.io/reactors?apiKey=b9d10dcab8f4dd45")
       const jsonData = await rawData.json()
 
       setPlantName(jsonData.plant_name)
-      
+
       const jsonReactorsData = await Promise.all(jsonData.reactors.map(async (reactor) => {
         const rawTempData = await fetch(`https://nuclear.dacoder.io/reactors/temperature/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
         const tempData = await rawTempData.json()
@@ -153,7 +137,7 @@ function App() {
 
         // const rawRefuelState = await fetch(`https://nuclear.dacoder.io/reactors/refuel/${reactor.id}?apiKey=892598c5362642d2`)
         // const refuelState = await rawRefuelState.json()
-        
+
         // Fuel injector, power ouptput, 
 
         return {
@@ -171,16 +155,21 @@ function App() {
         return accumulator + reactorOutput
       }, 0)
       setTotalOutput(totalOutputValue)
-      
+
 
       const totalTemperature = jsonReactorsData.reduce((accumulator, reactor) => {
         const reactorTemperature = reactor.temperature.amount || 0
         return accumulator + reactorTemperature
       }, 0)
 
-      const averageTemperature = jsonReactorsData.length > 0 ? totalTemperature / jsonReactorsData.length : 0
-      setAvgTemps(averageTemperature)
-      setReactors(jsonReactorsData)                          
+      const averageTemperature = totalTemperature / jsonReactorsData.length
+      setAvgTemps(prevAvgTemps => {
+        return [
+          ...prevAvgTemps,
+          averageTemperature
+        ].slice(-600)
+      })
+      setReactors(jsonReactorsData)
 
       console.log("Reactors:", jsonReactorsData)
       console.log("ReactorState: ", jsonReactorsData[0].reactorState)
@@ -188,26 +177,52 @@ function App() {
       console.log("Total Temperature:", totalTemperature)
     }
 
-    const interval = setInterval(fetchData, 5000)
+    const interval = setInterval(fetchData, 500)
 
     return () => clearInterval(interval)
 
   }, [])
   useEffect(() => {
     const ctx = canvasRef.current.getContext('2d');
+    const config = {
+      type: 'line',
+      options: {
+        animation: {
+          duration: 0,
+        },
+        scales: {
+          x: {
+            ticks: {
+              callback: (val, index) => {
+                return index % 2 === 0 ? val : '';
+              }
+            }
+          }
+        }
+      },
+      data: {
+        labels: avgTemps.map((_, index) => index * 0.5),
+        datasets: [
+          {
+            label: 'Average Temperatures',
+            data: avgTemps,
+            fill: false,
+            borderColor: 'rgba(75,192,192,1)',
+            borderWidth: 2,
+          }
+        ]
+      }
+    }
     const myChart = new Chart(ctx, config);
-    myChart.data.datasets[0].data = avgTemps;
-    myChart.update();
 
-  
     return () => {
       myChart.destroy()
     }
   }, [avgTemps]);
 
 
- 
- 
+
+
 
   return (
     <>
@@ -215,15 +230,17 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/">
-              <MainDashboard/>
+              <MainDashboard />
             </Route>
             <Route path={'/ReactorDashboard/:id'}>
-              <ReactorDashboard reactors={reactors} setReactors={setReactors}/>
+              <ReactorDashboard reactors={reactors} setReactors={setReactors} />
             </Route>
           </Switch>
         </Router>
       </ThemeProvider>
-      <canvas ref={canvasRef} id="myChart"></canvas>
+      <div style={{ width: "400px" }}>
+        <canvas ref={canvasRef} id="myChart"></canvas>
+      </div>
 
 
     </>
