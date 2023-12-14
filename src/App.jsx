@@ -182,6 +182,47 @@ function App() {
     return () => clearInterval(interval)
 
   }, [])
+  // useEffect(() => {
+  //   const ctx = canvasRef.current.getContext('2d')
+  //   const config = {
+  //     type: 'line',
+  //     options: {
+  //       animation: {
+  //         duration: 0,
+  //       },
+  //       scales: {
+  //         x: {
+  //           ticks: {
+  //             callback: (val, index) => {
+  //               return index % 2 === 0 ? val : '';
+  //             }
+  //           }
+  //         }
+  //       }
+  //     },
+  //     data: {
+  //       labels: ((_, index) => index * 0.5),
+  //       datasets: [
+  //         {
+  //           label: reactors.name,
+  //           data: reactors.temperature.amount,
+  //           fill: false,
+  //           borderColor: 'rgba(75,192,192,1)',
+  //           borderWidth: 2,
+  //         }
+  //       ]
+  //     }
+  //   }
+  //   const myChart = new Chart(ctx, config);
+
+  //   return () => {
+  //     myChart.destroy()
+  //   }
+  // }, [canvasRef, reactor.temperature.amount]);
+
+
+
+  
   useEffect(() => {
     const ctx = canvasRef.current.getContext('2d');
     const config = {

@@ -17,6 +17,7 @@ const ReactorDashboard = (props) => {
     // })[0]
 
     // console.log("asdfoaefoaiefaef ", curReactorData[0].coolant)
+    
 
     return (
         <>
