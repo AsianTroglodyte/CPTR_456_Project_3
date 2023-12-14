@@ -104,9 +104,9 @@ function App() {
   const [reactors, setReactors] = useState([])
   const [plantName, setPlantName] = useState("")
   const [avgTemps, setAvgTemps] = useState([])
+  const [avgTemp, setAvgTemp] = useState([])
   const [totalOutput, setTotalOutput] = useState(0)
   const canvasRef = useRef(null)
-  // Info for individual reactor dashboard
 
   //useParam
   useEffect(() => {
@@ -161,14 +161,18 @@ function App() {
         const reactorTemperature = reactor.temperature.amount || 0
         return accumulator + reactorTemperature
       }, 0)
+      
 
-      const averageTemperature = totalTemperature / jsonReactorsData.length
+      const averageTemperature = jsonReactorsData.length > 0 ? totalTemperature / jsonReactorsData.length : 0
       setAvgTemps(prevAvgTemps => {
         return [
           ...prevAvgTemps,
           averageTemperature
         ].slice(-600)
       })
+
+      // not to be confused with setAvgTemps which is a list of the average temperatures throughout time
+      setAvgTemp(averageTemperature)
       setReactors(jsonReactorsData)
 
       console.log("Reactors:", jsonReactorsData)
@@ -223,43 +227,43 @@ function App() {
 
 
   
-  useEffect(() => {
-    const ctx = canvasRef.current.getContext('2d');
-    const config = {
-      type: 'line',
-      options: {
-        animation: {
-          duration: 0,
-        },
-        scales: {
-          x: {
-            ticks: {
-              callback: (val, index) => {
-                return index % 2 === 0 ? val : '';
-              }
-            }
-          }
-        }
-      },
-      data: {
-        labels: avgTemps.map((_, index) => index * 0.5),
-        datasets: [
-          {
-            label: 'Average Temperatures',
-            data: avgTemps,
-            fill: false,
-            borderColor: 'rgba(75,192,192,1)',
-            borderWidth: 2,
-          }
-        ]
-      }
-    }
-    const myChart = new Chart(ctx, config);
+  // useEffect(() => {
+  //   const ctx = canvasRef.current.getContext('2d');
+  //   const config = {
+  //     type: 'line',
+  //     options: {
+  //       animation: {
+  //         duration: 0,
+  //       },
+  //       scales: {
+  //         x: {
+  //           ticks: {
+  //             callback: (val, index) => {
+  //               return index % 2 === 0 ? val : '';
+  //             }
+  //           }
+  //         }
+  //       }
+  //     },
+  //     data: {
+  //       labels: avgTemps.map((_, index) => index * 0.5),
+  //       datasets: [
+  //         {
+  //           label: 'Average Temperatures',
+  //           data: avgTemps,
+  //           fill: false,
+  //           borderColor: 'rgba(75,192,192,1)',
+  //           borderWidth: 2,
+  //         }
+  //       ]
+  //     }
+  //   }
+  //   const myChart = new Chart(ctx, config);
 
-    return () => {
-      myChart.destroy()
-    }
-  }, [avgTemps]);
+  //   return () => {
+  //     myChart.destroy()
+  //   }
+  // }, [avgTemps]);
 
 
 
@@ -271,7 +275,7 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/">
-              <MainDashboard />
+              <MainDashboard reactors={reactors} avgTemp={avgTemp} totalOutput={totalOutput} avgTemps={avgTemps}/>
             </Route>
             <Route path={'/ReactorDashboard/:id'}>
               <ReactorDashboard reactors={reactors} setReactors={setReactors} />
