@@ -171,7 +171,7 @@ function App() {
       console.log("Total Temperature:", totalTemperature)
     }
 
-    const interval = setInterval(fetchData, 5000)
+    const interval = setInterval(fetchData, 500)
 
     return () => clearInterval(interval)
 

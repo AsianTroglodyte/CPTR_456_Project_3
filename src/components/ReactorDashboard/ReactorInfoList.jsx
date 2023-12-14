@@ -43,26 +43,25 @@ const ReactorInfoList = (props) => {
 
     const serverChangeName = async (newName) => {
         console.log("Reactor Name: ", newName)
-        fetch(`https://nuclear.dacoder.io/reactors/set-reactor-name/${id}?apiKey=892598c5362642d2`, {
+        await fetch(`https://nuclear.dacoder.io/reactors/set-reactor-name/${id}?apiKey=b9d10dcab8f4dd45`, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",
-                "Content-Type": "application/json; charset=UTF-8"
-            }
-            ,
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(
                 {
                     "name": newName
                 }
             )
         })
-        // console.log("Reactor Name: ", newName)
+        console.log("Reactor Name: ", newName)
     }
 
     // getting the name of the 
     useEffect( () => {
         const fetchData = async () => {
-            const rawData = await fetch(`https://nuclear.dacoder.io/reactors/?apiKey=892598c5362642d2`)
+            const rawData = await fetch(`https://nuclear.dacoder.io/reactors/?apiKey=b9d10dcab8f4dd45`)
             const jsonData = await rawData.json()
             console.log("rods", JSON.stringify(jsonData))
         }
@@ -90,12 +89,10 @@ const ReactorInfoList = (props) => {
             variant="filled"
             value={reactorName}
             onChange={(event) => changeReactorName(event)}
-            // value="This Reactor" 
             sx={{fontSize: "24px", 
                 color: "#0B3964", 
                 maxWidth: "200px", 
                 overflow: "hidden", 
-                // width: `${inputWidth}px`
             }} 
         >
         </InputBase>

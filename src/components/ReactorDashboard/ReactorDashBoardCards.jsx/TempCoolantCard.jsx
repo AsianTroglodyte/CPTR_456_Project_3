@@ -4,20 +4,33 @@ import { useParams } from "react-router-dom"
 
 const TempCoolantCard = (props) => {
     const {id} = useParams()
-    const {reactors, setReactors} = props
+    const {reactors} = props
 
-    const [switchState, setSwitchState] = useState(false)
+    // const debounce (){
+    
+    // }
 
-    const changeCoolant = (event, val) => {
-        setSwitchState(event.target.checked)
-        serverChangeCoolant
-    }
-
-    const serverChangeCoolant = async () => {
-        await fetch(`https://nuclear.dacoder.io/reactors/coolant/${id}?apiKey=892598c5362642d2`, {
+    const handleCoolantSwitch = async (checked) => {
+        console.log("switched")
+        let coolantState = "on"
+        if (checked) {
+            coolantState = "on"
+        }
+        else {
+            coolantState = "off"
+        }
+        await fetch(`https://nuclear.dacoder.io/reactors/coolant/${id}?apiKey=b9d10dcab8f4dd45`, {
             method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify ({
+                "coolant": coolantState
+            })
         })
     }
+
 
     // I know that the following code is travesty but my brain is so fried rn extracting
     // and storing the current reactor's values onto the variables would be preferable. 
@@ -26,7 +39,6 @@ const TempCoolantCard = (props) => {
     let tempUnit = reactors.length != 0? reactors.find((reactor) => reactor.id === id).temperature.unit : "";
     let tempStatus = reactors.length != 0? reactors.find((reactor) => reactor.id === id).temperature.status : "";
     let coolantState = reactors.length != 0? reactors.find((reactor) => reactor.id === id).coolant : "loading";
-    let coolantSwitchState = reactors.length != 0? reactors.find((reactor) => reactor.id === id).coolant == "on"? true: false: false;
 
     return (
         <Card sx={{
@@ -50,9 +62,9 @@ const TempCoolantCard = (props) => {
                 </Typography>
                 <CardActions sx={{p:"0"}}>
                     <FormControlLabel 
-                        control={<Switch color="secondary" checked={coolantSwitchState}/>} 
-                        onChange={(event) => changeCoolant(event)}
-                        label={<Typography variant="basicInfo"> {coolantState}</Typography>}>
+                        control={<Switch color="secondary" checked={reactors.find(reactor => reactor.id === id)?.coolant === "on"}/>} 
+                        onChange={(event) => handleCoolantSwitch(event)}
+                        label={<Typography variant="basicInfo"> {reactors.find(reactor => reactor.id === id)?.coolant}</Typography>}>
                     </FormControlLabel>
                 </CardActions>
             </CardContent>
