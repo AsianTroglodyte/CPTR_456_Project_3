@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import './App.css'
 import MainDashboard from './components/MainDashboard/MainDashboard'
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import { createTheme, ThemeProvider } from "@mui/material";
 import ReactorDashboard from './components/ReactorDashboard/ReactorDashboard'
+import Chart from 'chart.js/auto'
 
 // Please note that we will eventually create our own custom theme
 // for the time being we will be using largely inline css to style our pages
@@ -104,17 +105,17 @@ function App() {
   const [plantName, setPlantName] = useState("")
   const [avgTemps, setAvgTemps] = useState([])
   const [totalOutput, setTotalOutput] = useState(0)
+  const canvasRef = useRef(null)
   // Info for individual reactor dashboard
 
-
-//useParam
+  //useParam
   useEffect(() => {
     const fetchData = async () => {
       const rawData = await fetch("https://nuclear.dacoder.io/reactors?apiKey=b9d10dcab8f4dd45")
       const jsonData = await rawData.json()
 
       setPlantName(jsonData.plant_name)
-      
+
       const jsonReactorsData = await Promise.all(jsonData.reactors.map(async (reactor) => {
         const rawTempData = await fetch(`https://nuclear.dacoder.io/reactors/temperature/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
         const tempData = await rawTempData.json()
@@ -136,7 +137,7 @@ function App() {
 
         // const rawRefuelState = await fetch(`https://nuclear.dacoder.io/reactors/refuel/${reactor.id}?apiKey=892598c5362642d2`)
         // const refuelState = await rawRefuelState.json()
-        
+
         // Fuel injector, power ouptput, 
 
         return {
@@ -154,16 +155,21 @@ function App() {
         return accumulator + reactorOutput
       }, 0)
       setTotalOutput(totalOutputValue)
-      
+
 
       const totalTemperature = jsonReactorsData.reduce((accumulator, reactor) => {
         const reactorTemperature = reactor.temperature.amount || 0
         return accumulator + reactorTemperature
       }, 0)
 
-      const averageTemperature = jsonReactorsData.length > 0 ? totalTemperature / jsonReactorsData.length : 0
-      setAvgTemps(averageTemperature)
-      setReactors(jsonReactorsData)                          
+      const averageTemperature = totalTemperature / jsonReactorsData.length
+      setAvgTemps(prevAvgTemps => {
+        return [
+          ...prevAvgTemps,
+          averageTemperature
+        ].slice(-600)
+      })
+      setReactors(jsonReactorsData)
 
       console.log("Reactors:", jsonReactorsData)
       console.log("ReactorState: ", jsonReactorsData[0].reactorState)
@@ -176,6 +182,88 @@ function App() {
     return () => clearInterval(interval)
 
   }, [])
+  // useEffect(() => {
+  //   const ctx = canvasRef.current.getContext('2d')
+  //   const config = {
+  //     type: 'line',
+  //     options: {
+  //       animation: {
+  //         duration: 0,
+  //       },
+  //       scales: {
+  //         x: {
+  //           ticks: {
+  //             callback: (val, index) => {
+  //               return index % 2 === 0 ? val : '';
+  //             }
+  //           }
+  //         }
+  //       }
+  //     },
+  //     data: {
+  //       labels: ((_, index) => index * 0.5),
+  //       datasets: [
+  //         {
+  //           label: reactors.name,
+  //           data: reactors.temperature.amount,
+  //           fill: false,
+  //           borderColor: 'rgba(75,192,192,1)',
+  //           borderWidth: 2,
+  //         }
+  //       ]
+  //     }
+  //   }
+  //   const myChart = new Chart(ctx, config);
+
+  //   return () => {
+  //     myChart.destroy()
+  //   }
+  // }, [canvasRef, reactor.temperature.amount]);
+
+
+
+  
+  useEffect(() => {
+    const ctx = canvasRef.current.getContext('2d');
+    const config = {
+      type: 'line',
+      options: {
+        animation: {
+          duration: 0,
+        },
+        scales: {
+          x: {
+            ticks: {
+              callback: (val, index) => {
+                return index % 2 === 0 ? val : '';
+              }
+            }
+          }
+        }
+      },
+      data: {
+        labels: avgTemps.map((_, index) => index * 0.5),
+        datasets: [
+          {
+            label: 'Average Temperatures',
+            data: avgTemps,
+            fill: false,
+            borderColor: 'rgba(75,192,192,1)',
+            borderWidth: 2,
+          }
+        ]
+      }
+    }
+    const myChart = new Chart(ctx, config);
+
+    return () => {
+      myChart.destroy()
+    }
+  }, [avgTemps]);
+
+
+
+
 
   return (
     <>
@@ -183,14 +271,18 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/">
-              <MainDashboard/>
+              <MainDashboard />
             </Route>
             <Route path={'/ReactorDashboard/:id'}>
-              <ReactorDashboard reactors={reactors} setReactors={setReactors}/>
+              <ReactorDashboard reactors={reactors} setReactors={setReactors} />
             </Route>
           </Switch>
         </Router>
       </ThemeProvider>
+      <div style={{ width: "400px" }}>
+        <canvas ref={canvasRef} id="myChart"></canvas>
+      </div>
+
 
     </>
   )

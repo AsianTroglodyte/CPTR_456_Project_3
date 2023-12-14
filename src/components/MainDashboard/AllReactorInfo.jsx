@@ -6,6 +6,8 @@ import { useState, useEffect} from "react";
 
 const AllReactorInfo = (props) =>{
     const { totalOutput, averageTemperature} = props
+    const averageTemperatureInGW = (averageTemperature / 1000).toFixed(2);
+
     return (
     <>
         <Stack direction="column" alignItems="center" spacing={3}>
@@ -15,7 +17,7 @@ const AllReactorInfo = (props) =>{
                 {/*Try finding a way remove the need for the "sx" props*/}
                 <Paper sx={{p:"15px", color:"#0B3964"}}>
                     <Typography display="block" variant="h3">Total Energy Output</Typography>
-                    <Typography display="block" variant="aggregateInfo"> {totalOutput.toFixed(2)} </Typography>
+                    <Typography display="block" variant="aggregateInfo"> {totalOutput.toFixed(2)} GW </Typography>
                 </Paper>
                 <Paper sx={{p:"15px", color:"#0B3964"}}>
                     <Typography display="block" variant="h3">Average Reactor Temperature</Typography>
