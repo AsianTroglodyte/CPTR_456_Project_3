@@ -107,13 +107,15 @@ function App() {
   const [avgTemp, setAvgTemp] = useState([])
   const [tempsLists, setTempsLists] = useState([])
   const [totalOutput, setTotalOutput] = useState(0)
+  const [reactorsStates, setReactorsStates] = useState({})
+  let prevReactorsStates = useRef<Object>(0)
 
   //useParam
   useEffect(() => {
     const fetchData = async () => {
       const rawData = await fetch("https://nuclear.dacoder.io/reactors?apiKey=b9d10dcab8f4dd45")
       const jsonData = await rawData.json()
-
+      prevReactorsStates = reactorsStates
       setPlantName(jsonData.plant_name)
 
       const jsonReactorsData = await Promise.all(jsonData.reactors.map(async (reactor) => {
@@ -171,20 +173,37 @@ function App() {
 
       })
 
+      setReactorsStates(jsonReactorsData.map( (reactor) => {
+        return {id: reactor.id, name: reactor.name, status: reactor.temperature.status}
+      }))
+
       // not to be confused with setAvgTemps which is a list of the average temperatures throughout time
       setAvgTemp(averageTemperature)
       setReactors(jsonReactorsData)
     }
 
-    const interval = setInterval(fetchData, 500)
+    const interval = setInterval(fetchData, 2000)
 
     return () => clearInterval(interval)
 
   }, [])
 
+  const reactorTempWarning = (reactorName) => {
+    enqueueSnackbar(`${reactorName} ${reactorTempStatus}`, {variant: "error"})
+  }
+
+  // useEffect(() => {
+  //   const danger = reactorsStates.reduce((accumulator, currentValue) => {
+  //     if (filter)
+  //       accumulator = true
+  //     }
+  //   );
+  // }, [reactorsStates])
 
 
-
+  console.log("reactors: ", reactors)
+  console.log("prev reactor state: ", prevReactorsStates)
+  console.log("reactor state: ", reactorsStates)
   return (
     <>
       <ThemeProvider theme={theme}>

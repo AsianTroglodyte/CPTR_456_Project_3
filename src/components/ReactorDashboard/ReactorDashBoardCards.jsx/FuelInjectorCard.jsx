@@ -1,12 +1,19 @@
 import {Card, Button, CardHeader, CardActions, Typography} from "@mui/material"
+import { enqueueSnackbar } from "notistack"
 import { useParams } from "react-router-dom"
 
 const FuelInjectorCard = (props) => {
-    const { fuelLevelData, rodsLowered, setRodsLowered} = props
+    const { fuelLevelData, rodsLowered, setRodsLowered, reactorStateData} = props
     const {id} = useParams()
 
 
+
     const handleRefuel = async () => {
+        if (reactorStateData?.state == "Maintenance"){
+            mustMaintenanceNotif()
+            return
+        }
+
         console.log('handleMaintenance', id)
         await fetch(`https://nuclear.dacoder.io/reactors/refuel/${id}?apiKey=b9d10dcab8f4dd45`, {
             method: 'POST'
@@ -19,6 +26,10 @@ const FuelInjectorCard = (props) => {
             method: 'POST'
         })
         setRodsLowered(300)
+    }
+
+    const mustMaintenanceNotif = () => {
+        enqueueSnackbar(`Must be in Maintenance Mode to Refuel`, {variant: "info"})
     }
 
     return (

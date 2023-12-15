@@ -1,10 +1,10 @@
 import {Card, Typography, CardContent, CardActions, Switch, FormControlLabel} from "@mui/material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
 const TempCoolantCard = (props) => {
     const {id} = useParams()
-    const {tempData, coolantData} = props
+    const {tempData, coolantData, reactorStateData} = props
     const [switchState, setSwitchState] = useState(false)
     // setSwitchState(event.target.checked)
 
@@ -24,7 +24,6 @@ const TempCoolantCard = (props) => {
         }
         console.log("coolantState: ", coolantState)
 
-
         await fetch(`https://nuclear.dacoder.io/reactors/coolant/${id}?apiKey=b9d10dcab8f4dd45`, {
             method: "POST",
             headers: {
@@ -36,6 +35,16 @@ const TempCoolantCard = (props) => {
             })
         })
     }
+
+    useEffect( () => {
+        const fetchData = async () => {
+            const rawCoolantData = await fetch(`https://nuclear.dacoder.io/reactors/coolant/?apiKey=b9d10dcab8f4dd45`)
+            const coolantData = await rawCoolantData.json()
+
+            switchState(coolantData.coolant == "on"? true: false)
+        }
+        fetchData()
+    },[])
 
     return (
         <Card sx={{
@@ -59,7 +68,16 @@ const TempCoolantCard = (props) => {
                 </Typography>
                 <CardActions sx={{p:"0"}}>
                     <FormControlLabel 
-                        control={<Switch color="secondary" checked={switchState}/>} 
+                        control={<Switch 
+                            color="secondary" 
+                            checked={switchState}
+                            disabled={
+                                reactorStateData?.state == "Offline" 
+                                || reactorStateData?.state == "Emergency Shutdown" 
+                                || reactorStateData?.state == "Maintenance"
+                                ? true
+                                : false
+                            }/>} 
                         onChange={(event) => handleSwitchState(event)}
                         label={<Typography variant="basicInfo"> {coolantData?.coolant}</Typography>}>
                     </FormControlLabel>

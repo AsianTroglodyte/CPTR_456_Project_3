@@ -1,6 +1,7 @@
 import { Paper, Typography, Card, CardActionArea, CardContent, CardHeader} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import {createTheme, ThemeProvider} from "@mui/material";
+import { enqueueSnackbar } from 'notistack';
 
 const ReactorCardDesktop = (props) => {
     const {reactorName, reactorTempStatus, reactorID} = props
@@ -27,7 +28,13 @@ const ReactorCardDesktop = (props) => {
             break
     }
 
-    // if 
+    const reactorTempWarning = () => {
+        enqueueSnackbar(`${reactorName} ${reactorTempStatus}`, {variant: "error"})
+    }
+
+    // if (reactorTempStatus != "Safe") {
+    //     reactorTempWarning()
+    // }
     
     // Note that there are a lot a MUI tags within. Make sure to get a BASIC understanding of what
     // they are and what they do. Do keep in mind their role here is largely semantic
