@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import StartupCard from "./ReactorDashBoardCards.jsx/StartupCard";
 
 const ReactorInfoList = (props) => {
-    const {reactors, setReactors} = props
+    const {tempData, coolantData, outputData, reactorStateData, fuelLevelData, rodStateData, reactors} = props
     const [reactorName, setReactorName] = useState("loading...")
     // the FuelInjectorCard changes the amount of Rods lowered in the RodStateCard. Thus the state must be declared here
     const [rodsLowered, setRodsLowered] = useState(0)
@@ -58,19 +58,6 @@ const ReactorInfoList = (props) => {
         console.log("Reactor Name: ", newName)
     }
 
-    // getting the name of the 
-    useEffect( () => {
-        const fetchData = async () => {
-            const rawData = await fetch(`https://nuclear.dacoder.io/reactors/?apiKey=b9d10dcab8f4dd45`)
-            const jsonData = await rawData.json()
-            console.log("rods", JSON.stringify(jsonData))
-        }
-    },[])
-
-
-
-    // let updatedReactorName = (reactors.length != 0? " " + reactors.find((reactor) => reactor.id === id).name : "loading")
-    // setReactorName(updatedReactorName)
 
     return (
         <>
@@ -110,15 +97,15 @@ const ReactorInfoList = (props) => {
 
                 <StartupCard />
 
-                <ShutdownCard setReactors={setReactors} reactors={reactors}/>
+                <ShutdownCard reactors={reactors}/>
 
-                <FuelInjectorCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered} setReactors={setReactors} reactors={reactors}/>
+                <FuelInjectorCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered} fuelLevelData={fuelLevelData}/>
 
-                <PowerOutputCard reactors={reactors}/>
+                <PowerOutputCard outputData={outputData}/>
 
                 <RodStateCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered}/>
 
-                <TempCoolantCard setReactors={setReactors} reactors={reactors}/>
+                <TempCoolantCard tempData={tempData} coolantData={coolantData}/>
                 
             </Stack>
         </Stack>

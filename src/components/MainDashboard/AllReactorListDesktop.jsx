@@ -11,7 +11,6 @@ const ReactorListDesktop = (props) => {
         direction= "column"
         spacing={1}
         alignItems="center"
-        justifyContent="center"
         minWidth= "250px"
         >
             <Typography variant="h2" color="primary"> All Reactors</Typography>
@@ -36,10 +35,6 @@ const ReactorListDesktop = (props) => {
                             />
                 })
                 }
-                {/* <ReactorCardDesktop reactorName = {"Reactor 1"} temperature = {"Safe"}/>
-                <ReactorCardDesktop reactorName = {"Reactor 2"} temperature = {"Warning"}/>
-                <ReactorCardDesktop reactorName = {"Reactor 3"} temperature = {"Danger"}/>
-                <ReactorCardDesktop reactorName = {"Reactor 4"} temperature = {"Meltdown"}/> */}
             </Stack>
         </Stack>
 

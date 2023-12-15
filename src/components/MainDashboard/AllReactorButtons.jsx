@@ -64,18 +64,18 @@ const AllReactorButtons = ({ reactors }) => {
 
     return (
         <>
-            <Stack spacing={2} direction="row">
-                <Button onClick={handleShutdown} variant="contained" size="small" color= 'emergencyButton' >Emergency Shutdown All</Button>
-                <Button onClick={handleControlShutdown} variant="contained" size="small"  color='regularButton'>Controlled Shutdown All</Button>
-                <Button onClick={handleCoolant} variant="contained" size="small"  color='regularButton'>Enable/Disable all coolants</Button>
-                <Button onClick={startReactors} variant="contained" size="small"  color='regularButton'>Start All Reactors</Button>
-                <Button onClick={handleRefuel} variant="contained" size="small"  color='regularButton'>Refuel All Reactors</Button>
-                <Button onClick={handleMaintenance} variant="contained" size="small"  color='regularButton'>All Reactor Maintenance</Button>
+            <div style= {{display: "flex", gap: "10px", flexDirection: "row", justifyContent: "center", flexWrap: "wrap"}} >
+                <Button onClick={handleShutdown} variant="contained" size="small" color= 'emergencyButton' sx={{width:"120px"}} >Emergency Shutdown All</Button>
+                <Button onClick={handleControlShutdown} variant="contained" size="small"  color='regularButton' sx={{width:"120px"}}>Controlled Shutdown All</Button>
+                <Button onClick={handleCoolant} variant="contained" size="small"  color='regularButton' sx={{width:"120px"}}>Enable/Disable all coolants</Button>
+                <Button onClick={startReactors} variant="contained" size="small"  color='regularButton' sx={{width:"120px"}}>Start All Reactors</Button>
+                <Button onClick={handleRefuel} variant="contained" size="small"  color='regularButton' sx={{width:"120px"}}>Refuel All Reactors</Button>
+                <Button onClick={handleMaintenance} variant="contained" size="small"  color='regularButton' sx={{width:"120px"}}>All Reactor Maintenance</Button>
 
 
                 
 
-            </Stack>
+            </div>
         </>
     )
 

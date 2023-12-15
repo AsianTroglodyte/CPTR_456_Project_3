@@ -2,7 +2,7 @@ import {Card, Button, CardHeader, CardActions, Typography} from "@mui/material"
 import { useParams } from "react-router-dom"
 
 const FuelInjectorCard = (props) => {
-    const { reactors, setReactors, rodsLowered, setRodsLowered} = props
+    const { fuelLevelData, rodsLowered, setRodsLowered} = props
     const {id} = useParams()
 
 
@@ -21,8 +21,6 @@ const FuelInjectorCard = (props) => {
         setRodsLowered(300)
     }
 
-    let fuelPercentage = reactors.length != 0? reactors.find((reactor) => reactor.id === id).fuelLevel.percentage.toFixed(2) + "%": "loading";
-    
     return (
         <Card sx={{
             width: "230px",
@@ -38,7 +36,7 @@ const FuelInjectorCard = (props) => {
                 titleTypographyProps={{variant:'h3' }}/>
             {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
             <Typography display="block" variant="basicInfo" sx={{mx:"16px", p:"0px", mb: "16px"}}>
-                {fuelPercentage}
+                {fuelLevelData?.fuel.percentage.toFixed(2) + " %"} 
             </Typography>
             <CardActions sx={{mx:"16px", p:"0px"}}>
                 <Button onClick={handleRefuel} variant="contained"  size="small" color="regularButton"> Refuel </Button>

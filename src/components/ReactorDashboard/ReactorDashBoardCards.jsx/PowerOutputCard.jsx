@@ -4,12 +4,7 @@ import { useParams } from "react-router-dom"
 
 const PowerOutputCard = (props) => {
     let {id} = useParams()
-    const {curReactorData, reactors} = props
-
-    // setPowerOutput(typeof reactors == "undefined" ? "loading" : reactors.find((reactor) => reactor.id === id))
-    let powerOutput = reactors.length != 0? reactors.find((reactor) => reactor.id === id).output.amount : "loading"
-    let powerUnits =  reactors.length != 0? " " + reactors.find((reactor) => reactor.id === id).output.unit : ""
-    // console.log("power output: ", powerOutput)
+    const {outputData} = props
 
     return (
         <Card sx={{
@@ -27,7 +22,7 @@ const PowerOutputCard = (props) => {
             {/*CardContent componenent needs extra margin at the bottom so CardActionArea Component spans card*/}
             <CardContent sx={{py:0, mb:2}} >
                 <Typography display="block" variant="basicInfo">
-                    {powerOutput + " " + powerUnits}
+                    {outputData?.output.amount + " " + outputData?.output.unit}
                 </Typography>
             </CardContent>
         </Card>

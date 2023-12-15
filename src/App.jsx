@@ -105,8 +105,8 @@ function App() {
   const [plantName, setPlantName] = useState("")
   const [avgTemps, setAvgTemps] = useState([])
   const [avgTemp, setAvgTemp] = useState([])
+  const [tempsLists, setTempsLists] = useState([])
   const [totalOutput, setTotalOutput] = useState(0)
-  const canvasRef = useRef(null)
 
   //useParam
   useEffect(() => {
@@ -135,11 +135,6 @@ function App() {
         const rawRodState = await fetch(`https://nuclear.dacoder.io/reactors/rod-state/${reactor.id}?apiKey=b9d10dcab8f4dd45`)
         const rodStateData = await rawRodState.json()
 
-        // const rawRefuelState = await fetch(`https://nuclear.dacoder.io/reactors/refuel/${reactor.id}?apiKey=892598c5362642d2`)
-        // const refuelState = await rawRefuelState.json()
-
-        // Fuel injector, power ouptput, 
-
         return {
           ...reactor,
           temperature: tempData.temperature,
@@ -161,24 +156,24 @@ function App() {
         const reactorTemperature = reactor.temperature.amount || 0
         return accumulator + reactorTemperature
       }, 0)
-      
+
 
       const averageTemperature = jsonReactorsData.length > 0 ? totalTemperature / jsonReactorsData.length : 0
       setAvgTemps(prevAvgTemps => {
-        return [
-          ...prevAvgTemps,
-          averageTemperature
-        ].slice(-600)
+        let newList = [...prevAvgTemps, averageTemperature]
+        if (newList.length > 600) {
+          newList = newList.slice(-600)
+          return newList;
+        }
+        else {
+          return newList;
+        }
+
       })
 
       // not to be confused with setAvgTemps which is a list of the average temperatures throughout time
       setAvgTemp(averageTemperature)
       setReactors(jsonReactorsData)
-
-      console.log("Reactors:", jsonReactorsData)
-      console.log("ReactorState: ", jsonReactorsData[0].reactorState)
-      console.log("Total Output: ", totalOutputValue)
-      console.log("Total Temperature:", totalTemperature)
     }
 
     const interval = setInterval(fetchData, 500)
@@ -186,85 +181,6 @@ function App() {
     return () => clearInterval(interval)
 
   }, [])
-  // useEffect(() => {
-  //   const ctx = canvasRef.current.getContext('2d')
-  //   const config = {
-  //     type: 'line',
-  //     options: {
-  //       animation: {
-  //         duration: 0,
-  //       },
-  //       scales: {
-  //         x: {
-  //           ticks: {
-  //             callback: (val, index) => {
-  //               return index % 2 === 0 ? val : '';
-  //             }
-  //           }
-  //         }
-  //       }
-  //     },
-  //     data: {
-  //       labels: ((_, index) => index * 0.5),
-  //       datasets: [
-  //         {
-  //           label: reactors.name,
-  //           data: reactors.temperature.amount,
-  //           fill: false,
-  //           borderColor: 'rgba(75,192,192,1)',
-  //           borderWidth: 2,
-  //         }
-  //       ]
-  //     }
-  //   }
-  //   const myChart = new Chart(ctx, config);
-
-  //   return () => {
-  //     myChart.destroy()
-  //   }
-  // }, [canvasRef, reactor.temperature.amount]);
-
-
-
-  
-  // useEffect(() => {
-  //   const ctx = canvasRef.current.getContext('2d');
-  //   const config = {
-  //     type: 'line',
-  //     options: {
-  //       animation: {
-  //         duration: 0,
-  //       },
-  //       scales: {
-  //         x: {
-  //           ticks: {
-  //             callback: (val, index) => {
-  //               return index % 2 === 0 ? val : '';
-  //             }
-  //           }
-  //         }
-  //       }
-  //     },
-  //     data: {
-  //       labels: avgTemps.map((_, index) => index * 0.5),
-  //       datasets: [
-  //         {
-  //           label: 'Average Temperatures',
-  //           data: avgTemps,
-  //           fill: false,
-  //           borderColor: 'rgba(75,192,192,1)',
-  //           borderWidth: 2,
-  //         }
-  //       ]
-  //     }
-  //   }
-  //   const myChart = new Chart(ctx, config);
-
-  //   return () => {
-  //     myChart.destroy()
-  //   }
-  // }, [avgTemps]);
-
 
 
 
@@ -275,19 +191,14 @@ function App() {
         <Router>
           <Switch>
             <Route exact path="/">
-              <MainDashboard reactors={reactors} avgTemp={avgTemp} totalOutput={totalOutput} avgTemps={avgTemps}/>
+              <MainDashboard plant_name={plantName} reactors={reactors} avgTemp={avgTemp} totalOutput={totalOutput} avgTemps={avgTemps} />
             </Route>
             <Route path={'/ReactorDashboard/:id'}>
-              <ReactorDashboard reactors={reactors} setReactors={setReactors} />
+              <ReactorDashboard reactors={reactors} tempsLists={tempsLists} />
             </Route>
           </Switch>
         </Router>
       </ThemeProvider>
-      <div style={{ width: "400px" }}>
-        <canvas ref={canvasRef} id="myChart"></canvas>
-      </div>
-
-
     </>
   )
 }

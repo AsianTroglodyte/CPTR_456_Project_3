@@ -8,13 +8,13 @@ const RodStateCard = (props) => {
     
 
     const changeRodsLowered = (event) => {
+        setRodsLowered(event.target.value)
         if (rodsLowered > event.target.value) {
             decrementRodsLowered()
         }
         else if (rodsLowered < event.target.value) {
             incrementRodsLowered()
         }
-        setRodsLowered(event.target.value)
         // handleRodState(event.target.value)
     }
 
@@ -59,7 +59,10 @@ const RodStateCard = (props) => {
                             }}
                             variant="filled"
                             onChange={(event)=> {changeRodsLowered(event)}}
-                            inputProps={{min:0, max:250, maxstep:1}}
+                            onKeyDown={(event) => {
+                                event.preventDefault();
+                            }}
+                            inputProps={{min:0, max:300, maxstep:1}}
                             // The margin left styling is a bit strange indeed
                             // the positioning of the label is very off for some reason
                             sx={{width: "80px", height: "20px", ml: "28px"}}/>}

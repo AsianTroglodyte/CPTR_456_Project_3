@@ -1,4 +1,4 @@
-import { useEffect, useRef} from "react";
+import { useEffect, useRef, useState} from "react";
 import Chart from 'chart.js/auto'
 
 
@@ -25,8 +25,7 @@ const AllReactorTempGraph = (props) => {
             }
             },
             data: {
-            // labels: typeof avgTemps != undefined? avgTemps.map((_, index) => index * 0.5): [0],
-            labels: avgTemps?.map((_, index) => index * 0.5), //: [0],
+            labels: avgTemps?.map((_, index) => index * 0.5),
             datasets: [
                 {
                 label: 'Average Temperatures',
@@ -47,8 +46,7 @@ const AllReactorTempGraph = (props) => {
 
     return (
         <>
-        AllReactorTempGraph
-            <div style={{ width: "400px" }}>
+            <div style={{ width: "45vw", paddingTop: "1vh"}}>
                 <canvas ref={canvasRef} id="myChart"></canvas>
             </div>
         </>

@@ -9,7 +9,6 @@ const AllReactorInfo = (props) =>{
     return (
     <>
         <Stack direction="column" alignItems="center" spacing={3}>
-            <AllReactorTempGraph />
 
             <Stack direction="row" spacing={5} justifyContent="center">
                 {/*Try finding a way remove the need for the "sx" props*/}
