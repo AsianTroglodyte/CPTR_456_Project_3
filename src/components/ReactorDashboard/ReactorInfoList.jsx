@@ -97,15 +97,15 @@ const ReactorInfoList = (props) => {
 
                 <StartupCard />
 
-                <ShutdownCard reactors={reactors}/>
+                <ShutdownCard reactors={reactors} reactorStateData={reactorStateData}/>
 
-                <FuelInjectorCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered} fuelLevelData={fuelLevelData}/>
+                <FuelInjectorCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered} fuelLevelData={fuelLevelData} reactors={reactors} reactorStateData={reactorStateData}/>
 
-                <PowerOutputCard outputData={outputData}/>
+                <PowerOutputCard outputData={outputData} reactorStateData={reactorStateData}/>
 
-                <RodStateCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered} reactorStateData={reactorStateData}/>
+                <RodStateCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered} reactors={reactors} reactorStateData={reactorStateData}/>
 
-                <TempCoolantCard tempData={tempData} coolantData={coolantData} reactorStateData={reactorStateData}/>
+                <TempCoolantCard tempData={tempData} coolantData={coolantData} reactors={reactors}/>
                 
             </Stack>
         </Stack>

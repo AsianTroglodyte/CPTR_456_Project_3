@@ -33,7 +33,9 @@ const RodStateCard = (props) => {
 
     }
 
-    
+    const addMessage = () => {
+        enqueueSnackbar("this Reactor ")
+    }
 
     return (
         <Card sx={{
