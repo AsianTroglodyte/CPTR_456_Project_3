@@ -1,9 +1,10 @@
 import {Card, CardHeader, TextField, Typography, FormControlLabel} from "@mui/material"
+import { enqueueSnackbar } from "notistack"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
 const RodStateCard = (props) => {
-    const {rodsLowered, setRodsLowered} = props
+    const {rodsLowered, setRodsLowered, reactorStateData} = props
     const {id} = useParams()
     
 
@@ -15,7 +16,6 @@ const RodStateCard = (props) => {
         else if (rodsLowered < event.target.value) {
             incrementRodsLowered()
         }
-        // handleRodState(event.target.value)
     }
 
     const incrementRodsLowered = async () => {
@@ -30,7 +30,10 @@ const RodStateCard = (props) => {
         await fetch(`https://nuclear.dacoder.io/reactors/raise-rod/${id}?apiKey=b9d10dcab8f4dd45`, {
             method: 'POST',
         })
+
     }
+
+    
 
     return (
         <Card sx={{
@@ -62,6 +65,13 @@ const RodStateCard = (props) => {
                             onKeyDown={(event) => {
                                 event.preventDefault();
                             }}
+                            disabled={
+                                reactorStateData?.state == "Offline" 
+                                || reactorStateData?.state == "Emergency Shutdown" 
+                                || reactorStateData?.state == "Maintenance"
+                                ? true
+                                : false
+                            }
                             inputProps={{min:0, max:300, maxstep:1}}
                             // The margin left styling is a bit strange indeed
                             // the positioning of the label is very off for some reason

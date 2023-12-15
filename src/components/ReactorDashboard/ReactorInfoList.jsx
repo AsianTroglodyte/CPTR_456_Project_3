@@ -103,7 +103,7 @@ const ReactorInfoList = (props) => {
 
                 <PowerOutputCard outputData={outputData}/>
 
-                <RodStateCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered}/>
+                <RodStateCard rodsLowered={rodsLowered} setRodsLowered={setRodsLowered} reactorStateData={reactorStateData}/>
 
                 <TempCoolantCard tempData={tempData} coolantData={coolantData}/>
                 

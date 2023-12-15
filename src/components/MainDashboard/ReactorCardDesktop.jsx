@@ -27,6 +27,8 @@ const ReactorCardDesktop = (props) => {
             break
     }
 
+    // if 
+    
     // Note that there are a lot a MUI tags within. Make sure to get a BASIC understanding of what
     // they are and what they do. Do keep in mind their role here is largely semantic
     return (
